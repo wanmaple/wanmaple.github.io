@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wanmaple.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文介绍了红黑树，并提供了一些构建红黑树的思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树">
+<meta property="og:url" content="https://wanmaple.github.io/2023/12/07/red-black-tree/index.html">
+<meta property="og:site_name" content="Winder&#39;s Blog">
+<meta property="og:description" content="本文介绍了红黑树，并提供了一些构建红黑树的思路。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_0.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_1.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_2.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_3.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_4.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_5.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_6.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_7.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_8.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_9.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_10.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_11.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_12.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_13.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_14.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_15.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_16.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_17.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_18.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_19.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_20.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_21.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_22.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_23.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_24.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_25.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_26.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_27.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_28.png">
+<meta property="og:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_29.png">
+<meta property="article:published_time" content="2023-12-06T16:15:43.000Z">
+<meta property="article:modified_time" content="2023-12-06T16:15:54.831Z">
+<meta property="article:author" content="Winder">
+<meta property="article:tag" content="Algorithms">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanmaple.github.io/2023/12/07/red-black-tree/image_0.png">
+
+
+<link rel="canonical" href="https://wanmaple.github.io/2023/12/07/red-black-tree/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://wanmaple.github.io/2023/12/07/red-black-tree/","path":"2023/12/07/red-black-tree/","title":"红黑树"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>红黑树 | Winder's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Winder's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Game Programmer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text">为什么选择红黑树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">红黑树的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%80%A7%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">红黑树的性能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%88%A0%E9%99%A4"><span class="nav-number">3.</span> <span class="nav-text">红黑树的插入与删除</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E7%AD%96%E7%95%A5"><span class="nav-number">3.1.</span> <span class="nav-text">修复策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E6%97%8B%E8%BD%AC"><span class="nav-number">3.1.1.</span> <span class="nav-text">树的旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pullpush-black"><span class="nav-number">3.1.2.</span> <span class="nav-text">Pull&#x2F;Push Black</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="nav-number">3.2.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="nav-number">3.3.</span> <span class="nav-text">删除操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Winder</p>
+  <div class="site-description" itemprop="description">随便写写。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wanmaple.github.io/2023/12/07/red-black-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Winder">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Winder's Blog">
+      <meta itemprop="description" content="随便写写。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="红黑树 | Winder's Blog">
+      <meta itemprop="description" content="本文介绍了红黑树，并提供了一些构建红黑树的思路。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          红黑树
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-12-07 00:15:43 / Modified: 00:15:54" itemprop="dateCreated datePublished" datetime="2023-12-07T00:15:43+08:00">2023-12-07</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文介绍了红黑树，并提供了一些构建红黑树的思路。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言">前言</h1>
+<p>红黑树是一个很有魅力的数据结构，拥有非常平均的查询、插入、删除时间复杂度，适用场景也非常多，不少区间树也是基于红黑树实现。</p>
+<p>不过确实有不少人苦于红黑树的实现，也有不少人只是记录红黑树在插入或删除时根据怎样怎样的情况做怎样怎样的操作，红黑树的插入删除确实也比较复杂，尤其是删除操作，因此本文会通过一些思路来帮助你理解构造红黑树的一些思路而不全是死记硬背。</p>
+<p>本文假设你对二叉树的一些基本概念都已经有所掌握，比如内部节点、叶子结点、父节点、子节点、兄弟节点、前驱结点、后继结点、树的高度、节点的深度、二叉搜索树等概念都是清楚的，本文不会讲解这些基础的内容。</p>
+<p>另外本文会尽可能地避免过多的数学，而是尽量通过直观上的、直觉上的感受来讲解红黑树。</p>
+<h1 id="为什么选择红黑树">为什么选择红黑树</h1>
+<h2 id="红黑树的定义">红黑树的定义</h2>
+<p>一棵红黑树需要满足以下条件：</p>
+<ol type="1">
+<li>所有的节点不是黑色就是红色。</li>
+<li>根节点是黑色。</li>
+<li>NIL节点是黑色。</li>
+<li>红色节点的父节点一定是黑色。</li>
+<li>任意一个节点到其所有子孙下的NIL节点的一条简单路径上的黑色节点数量相同，这个数量称为Black-Height。</li>
+</ol>
+<p>比如图1就展示了一棵红黑树：</p>
+<figure>
+<img src="image_0.png" alt="图1 - 红黑树示例" />
+<figcaption aria-hidden="true">图1 - 红黑树示例</figcaption>
+</figure>
+<p>所有NIL节点的Black-Height为零，上图中所有内部节点的Black-Height都标注在该节点旁边，有个小数字。</p>
+<p>上述的条件也说明了另一个事实，那就是一棵红黑树的任意子树都至少满足1、3、4、5这些条件，这点会成为分析红黑树修复的一个重要前提。</p>
+<p>有几个容易混淆的点这里要强调一下，比如定义中的NIL节点不是常规上理解的叶子节点，在红黑树中NIL节点确实需要扮演叶子节点的角色，但是务必不能将NIL节点忽略，图2是一个反例：</p>
+<figure>
+<img src="image_1.png" alt="图2 - 红黑树的反例" />
+<figcaption aria-hidden="true">图2 - 红黑树的反例</figcaption>
+</figure>
+<p>如果随意地忽略掉NIL节点，那么会有人认为上图是一棵红黑树。由于NIL节点确保了每个内部节点都有两个叶子结点，如果随意忽略，那么有些人可能会遗漏掉上图中E节点存在右孩子这一事实，从而误认为满足条件5而认为是一棵红黑树，而实际上上图违背了条件5，因此不是一棵红黑树。</p>
+<h2 id="红黑树的性能">红黑树的性能</h2>
+<p>红黑树是二叉搜索树，<span
+class="math inline">\(n\)</span>个节点(不包括NIL节点)的红黑树的高度期望为<span
+class="math inline">\(\textrm
+O(\log_2n)\)</span>，这也说明了红黑树的查询、插入、删除的时间复杂度均为<span
+class="math inline">\(\textrm O(\log_2n)\)</span>。</p>
+<p>那么如何证明红黑树的高度期望呢？数学上当然可以使用归纳法去证明，不过这里提供一种直觉上的证明，假设有图3这样一棵红黑树：</p>
+<figure>
+<img src="image_2.png" alt="图3 - 某棵红黑树" />
+<figcaption aria-hidden="true">图3 - 某棵红黑树</figcaption>
+</figure>
+<p>现在将所有的红色节点与它的父节点合并，并将它的孩子节点继承给父节点，那么上面的红黑树会变成图4所示：</p>
+<figure>
+<img src="image_3.png" alt="图4 - 将红色节点合并给父节点后的树" />
+<figcaption aria-hidden="true">图4 -
+将红色节点合并给父节点后的树</figcaption>
+</figure>
+<p>假设原本红黑树的NIL节点数量为<span
+class="math inline">\(l\)</span>，合并后的树的NIL节点数量为<span
+class="math inline">\(l&#39;\)</span>，首先根据二叉树的性质有<span
+class="math inline">\(l=n+1\)</span>，然后合并后并不会影响到NIL节点的数量，因为NIL节点全部是黑色，自然就会留在原地或成为某个黑色节点的孩子节点，因此<span
+class="math inline">\(l&#39;=l=n+1\)</span>。</p>
+<p>假设原本红黑树的高度为<span
+class="math inline">\(h\)</span>，合并后的树的高度为<span
+class="math inline">\(h&#39;\)</span>，合并后的树每个节点的孩子节点将会是<span
+class="math inline">\(2\)</span>到<span
+class="math inline">\(4\)</span>个，这说明<span
+class="math inline">\(2^{h&#39;}\leq l&#39;\leq
+4^{h&#39;}\)</span>，这里只关心左半部分，也就是<span
+class="math inline">\(2^{h&#39;}\leq l&#39;\)</span>，从而推导出<span
+class="math inline">\(h&#39;\leq\log_2l&#39;=\log_2(n+1)\)</span>。再来看<span
+class="math inline">\(h\)</span>和<span
+class="math inline">\(h&#39;\)</span>的关系，由于红色节点全部被合并，但是根据红黑树的条件4说明在红黑树的某条简单路径上，最多出现红黑相间的情况，此时红色节点的数量不会超过黑色节点的数量，所以<span
+class="math inline">\(h\leq 2h&#39;\leq2\log_2(n+1)\Rightarrow h=\textrm
+O(\log_2n)\)</span>。</p>
+<p>其实合并后的树也有它专门的名称：2-3-4树，想必应该是有不少人听过的。</p>
+<p>实际上红黑树的NIL节点的最大深度和最小深度的差不会超过<span
+class="math inline">\(2\)</span>，因为任意两条从根节点出发的简单路径上，黑色节点与黑色节点之间最多存在一个红色节点，拜红黑树的条件4所赐。</p>
+<h1 id="红黑树的插入与删除">红黑树的插入与删除</h1>
+<h2 id="修复策略">修复策略</h2>
+<p>这部分则是红黑树最复杂的部分，尤其是删除操作，在开始展开讲插入操作和删除操作之前，现来了解一些能用的修复手段，因为不论是新增节点还是删除节点，都避免不了对节点进行重新染色，红黑树的条件4和条件5决定了这一点，而条件5则是非常棘手的问题，因此不论是插入还是删除，优先确保条件5的成立再尝试修复其他条件是更好的策略。</p>
+<p>修复的方向是从底部到顶部递归修复，因为此时在维持条件5的前提下，不会影响到同等级的其他子树，这个会在讲插入和删除的时候体会到。
+另外在这个大章节中，我不会将NIL节点视为叶子节点，而是将实际存在的叶子节点作为叶子结点，嗯，说起来有点绕，不过你应该能明白我的意思。</p>
+<h3 id="树的旋转">树的旋转</h3>
+<p>在AVL树中，树的旋转操作主要是为了调整节点的最大深度从而使二叉树仍然平衡，但是在红黑树中，树的旋转主要用于调整颜色，不论目的是什么，现描述一下树的旋转的概念。</p>
+<p>树的旋转分为两种，一种是左旋，一种是右旋，下文用<span
+class="math inline">\(\textrm{LeftRotate}\)</span>和<span
+class="math inline">\(\textrm{RightRotate}\)</span>两个函数来表示。</p>
+<p>旋转的过程如图5所示：</p>
+<figure>
+<img src="image_4.png" alt="图5 - 树的旋转" />
+<figcaption aria-hidden="true">图5 - 树的旋转</figcaption>
+</figure>
+<p>树的旋转拥有很神奇的特点就是它不会影响到节点之间的顺序关系，比如上图中，不论是左侧还是右侧，都满足<span
+class="math inline">\(\alpha&lt;x&lt;\beta&lt;y&lt;\gamma\)</span>，这也是为什么树的旋转是一个重要的工具。</p>
+<p>右旋的过程如图6所示：</p>
+<figure>
+<img src="image_5.png" alt="图6 - 树的右旋" />
+<figcaption aria-hidden="true">图6 - 树的右旋</figcaption>
+</figure>
+<p><span class="math inline">\(\textrm{RightRotate}(y)\)</span>：将<span
+class="math inline">\(\beta\)</span>(左孩子的右孩子)与<span
+class="math inline">\(x\)</span>(左孩子)解绑并将<span
+class="math inline">\(x\)</span>与<span
+class="math inline">\(y\)</span>解绑，然后将<span
+class="math inline">\(y\)</span>系在<span
+class="math inline">\(x\)</span>的右孩子上，最后再将解绑的<span
+class="math inline">\(\beta\)</span>系在<span
+class="math inline">\(y\)</span>的左孩子上，此时局部根节点由<span
+class="math inline">\(y\)</span>变成<span
+class="math inline">\(x\)</span>，注意原本<span
+class="math inline">\(y\)</span>的父节点现在成为了<span
+class="math inline">\(x\)</span>的父节点。</p>
+<p>左旋的过程如图7所示：</p>
+<figure>
+<img src="image_6.png" alt="图7 - 树的左旋" />
+<figcaption aria-hidden="true">图7 - 树的左旋</figcaption>
+</figure>
+<p><span class="math inline">\(\textrm{LeftRotate}(x)\)</span>：将<span
+class="math inline">\(\beta\)</span>(右孩子的左孩子)与<span
+class="math inline">\(y\)</span>(右孩子)解绑并将<span
+class="math inline">\(y\)</span>与<span
+class="math inline">\(x\)</span>解绑，然后将<span
+class="math inline">\(x\)</span>系在<span
+class="math inline">\(y\)</span>的左孩子上，最后再将解绑的<span
+class="math inline">\(\beta\)</span>系在<span
+class="math inline">\(x\)</span>的右孩子上，此时局部根节点由<span
+class="math inline">\(x\)</span>变成<span
+class="math inline">\(y\)</span>，注意原本<span
+class="math inline">\(x\)</span>的父节点现在成为了<span
+class="math inline">\(y\)</span>的父节点。</p>
+<p>树的旋转在保留了顺序的前提下修改了树的结构，但是这里还先不讲染色相关的逻辑，染色相关的逻辑会在插入或删除中继续阐述。</p>
+<h3 id="pullpush-black">Pull/Push Black</h3>
+<p>重新染色有两种非常方便的操作，它能保证红黑树的条件5不被破坏，它们分别为Pull
+Black和Push Black，下面用<span
+class="math inline">\(\textrm{PullBlack}\)</span>和<span
+class="math inline">\(\textrm{PushBlack}\)</span>来表达这两个函数。</p>
+<p>如果令红色的值为<span
+class="math inline">\(0\)</span>，黑色的值为<span
+class="math inline">\(1\)</span>，那么这个值可以表达该颜色对Black-Height的贡献值(红色不计入Black-Height，黑色计为<span
+class="math inline">\(1\)</span>个Black-Height)，在删除的时候会引入一种新的颜色称为双黑(Double-Black)，它的值为<span
+class="math inline">\(2\)</span>，这里就把它当做第三种颜色即可。</p>
+<p>这两种操作如图8所示：</p>
+<figure>
+<img src="image_7.png" alt="图8 - Pull/Push Black" />
+<figcaption aria-hidden="true">图8 - Pull/Push Black</figcaption>
+</figure>
+<p><span class="math inline">\(\textrm{PullBlack}(x)\)</span>：令<span
+class="math inline">\(x\)</span>节点的颜色值<span
+class="math inline">\(+1\)</span>，令两个孩子节点的颜色值<span
+class="math inline">\(-1\)</span>，<span
+class="math inline">\(x\)</span>的颜色值不能为<span
+class="math inline">\(2\)</span>。需要注意两点，其一是孩子节点不能是NIL节点，因为NIL节点只能是黑色；其二是修复后任意一个孙子节点不能有红色，否则孩子节点的局部会破坏红黑树的条件4(修复方向是底部到顶部)。</p>
+<p><span class="math inline">\(\textrm{PushBlack}(x)\)</span>：令<span
+class="math inline">\(x\)</span>节点的颜色值<span
+class="math inline">\(-1\)</span>，令两个孩子节点的颜色值<span
+class="math inline">\(+1\)</span>，<span
+class="math inline">\(x\)</span>的颜色值不能为<span
+class="math inline">\(0\)</span>。需要注意一点，其一是孩子节点不能是黑色，不然孩子节点会变成双黑节点(因为双黑节点是最终要根除的颜色，而修复方向是底部到顶部，违背了修复方向)。</p>
+<p>这两种操作由于其简单性，是在修复过程优先考虑的，只有行不通时才会再考虑旋转操作。</p>
+<h2 id="插入操作">插入操作</h2>
+<p>根据二叉搜索树的性质，插入的节点最终一定是叶子节点，由于红黑树的条件5难以控制，因此需要先保证插入新节点后条件5仍然满足，因此新插入的节点默认为红色(红色对Black-Height没有贡献)。</p>
+<p>之前有提到过修复的过程是从底部到顶部，因此要将插入修复的情况视为一般情况，即待修复的节点可能是树中的任意一个节点，因此接下来讨论的情况都是基于任意情况，假设待修复节点为<span
+class="math inline">\(x\)</span>，那么<span
+class="math inline">\(x\)</span>一定是红色，因为如果<span
+class="math inline">\(x\)</span>是黑色，那么一定不会破坏红黑树的条件4，从而停止修复。在插入一个新节点后，<span
+class="math inline">\(x\)</span>从新节点开始。</p>
+<ul>
+<li><p>如果待修复节点<span
+class="math inline">\(x\)</span>的父节点为黑色，这是最简单的情况，直接停止修复即可。</p></li>
+<li><p>如果待修复节点<span
+class="math inline">\(x\)</span>的父节点为红色该怎么办呢？现来看图9：</p>
+<figure>
+<img src="image_8.png" alt="图9 - 父节点为红色，条件4不满足。" />
+<figcaption aria-hidden="true">图9 -
+父节点为红色，条件4不满足。</figcaption>
+</figure>
+<p>上图中没有圈的字母表示它的局部Black-Height，只是想表达现在这个情况仍然满足条件5。首先如果<span
+class="math inline">\(p\)</span>此时为红色，那么<span
+class="math inline">\(g\)</span>一定为黑色(条件4)，要想修复<span
+class="math inline">\(x\)</span>就得想办法让<span
+class="math inline">\(p\)</span>变成黑色，那么第一个想到的是<span
+class="math inline">\(\mathrm{PushBlack}(g)\)</span>，但是要想使用这个操作，<span
+class="math inline">\(u\)</span>必须是红色的，所以不妨先考虑第一种情况：</p>
+<ul>
+<li><p>叔叔节点<span
+class="math inline">\(u\)</span>是红色，此时的情况如图10所示：</p>
+<figure>
+<img src="image_9.png"
+alt="图10 - 叔叔节点为红色，执行\mathrm{PushBlack}(g)可将待修复节点转移至g。" />
+<figcaption aria-hidden="true">图10 - 叔叔节点为红色，执行<span
+class="math inline">\(\mathrm{PushBlack}(g)\)</span>可将待修复节点转移至<span
+class="math inline">\(g\)</span>。</figcaption>
+</figure>
+<p>此时满足<span
+class="math inline">\(\mathrm{PushBlack}\)</span>的条件，因此只需要执行<span
+class="math inline">\(\mathrm{PushBlack}(g)\)</span>即可修复<span
+class="math inline">\(x\)</span>，但是此时由于<span
+class="math inline">\(g\)</span>节点变成了红色，因此下一个需要修复的节点变成了<span
+class="math inline">\(g\)</span>。</p></li>
+<li><p>叔叔节点<span
+class="math inline">\(u\)</span>是黑色，此时的情况则变得有点复杂，首先<span
+class="math inline">\(x\)</span>可能是<span
+class="math inline">\(p\)</span>的左孩子亦或是右孩子，而<span
+class="math inline">\(p\)</span>又可能是<span
+class="math inline">\(g\)</span>的左孩子亦或是右孩子，不论怎样，先来看其中一种情况吧。</p>
+<ul>
+<li><p>LL Case(<span class="math inline">\(x\)</span>是左孩子，<span
+class="math inline">\(p\)</span>是左孩子)，此时的情况如图11所示：</p>
+<figure>
+<img src="image_10.png" alt="图11 - 叔叔节点是黑色，LL Case。" />
+<figcaption aria-hidden="true">图11 - 叔叔节点是黑色，LL
+Case。</figcaption>
+</figure>
+<p>此时由于没有了简单的修复手段，因此只能考虑旋转，目的是将<span
+class="math inline">\(p\)</span>变成黑色，不妨对<span
+class="math inline">\(g\)</span>做右旋操作，然后令<span
+class="math inline">\(p\)</span>变成黑色看看呢？这个时候会变成图12的情况：</p>
+<figure>
+<img src="image_11.png"
+alt="图12 - \textrm{RightRotate}(g)并将p变成黑色" />
+<figcaption aria-hidden="true">图12 - <span
+class="math inline">\(\textrm{RightRotate}(g)\)</span>并将<span
+class="math inline">\(p\)</span>变成黑色</figcaption>
+</figure>
+<p>这个时候左侧的局部Black-Height仍然是<span
+class="math inline">\(n\)</span>，而右侧的局部Black-Height是<span
+class="math inline">\(n+1\)</span>，正好多了<span
+class="math inline">\(1\)</span>，而且<span
+class="math inline">\(g\)</span>正好在两个黑色节点当中，那把<span
+class="math inline">\(g\)</span>染成红色不就行了吗？而且就算<span
+class="math inline">\(u\)</span>是NIL节点也不会影响结果，所以最终的手段如图13所示：</p>
+<figure>
+<img src="image_12.png"
+alt="图13 - 叔叔节点是黑色，LL Case：右旋g并交换p和g的颜色。" />
+<figcaption aria-hidden="true">图13 - 叔叔节点是黑色，LL Case：右旋<span
+class="math inline">\(g\)</span>并交换<span
+class="math inline">\(p\)</span>和<span
+class="math inline">\(g\)</span>的颜色。</figcaption>
+</figure>
+<p>所以在不清楚怎么做之前，不妨先尝试一下，这样就很容易推理出结果。</p></li>
+<li><p>RL Case(<span class="math inline">\(x\)</span>是右孩子，<span
+class="math inline">\(p\)</span>是左孩子)，此时的情况如图14所示：</p>
+<figure>
+<img src="image_13.png" alt="图14 - 叔叔节点是黑色，RL Case。" />
+<figcaption aria-hidden="true">图14 - 叔叔节点是黑色，RL
+Case。</figcaption>
+</figure>
+<p>这个时候如果你尝试LL
+Case的处理方式会发现行不通，会变成图15中的样子：</p>
+<figure>
+<img src="image_14.png" alt="图15 - 尝试LL Case的处理方式" />
+<figcaption aria-hidden="true">图15 - 尝试LL Case的处理方式</figcaption>
+</figure>
+<p>虽然条件5仍然满足，但是<span class="math inline">\(g\)</span>和<span
+class="math inline">\(x\)</span>冲突了，显然是不行的，然而幸运的是我们知道怎么让RL
+Case变成LL Case，如果先将<span
+class="math inline">\(p\)</span>进行左旋的话，正好就能得到LL
+Case的情况，如图16所示：</p>
+<figure>
+<img src="image_15.png"
+alt="图16 - 叔叔节点是黑色，RL Case：先左旋p就变成了LL Case，然后只需要右旋g并交换x和g的颜色。" />
+<figcaption aria-hidden="true">图16 - 叔叔节点是黑色，RL
+Case：先左旋<span class="math inline">\(p\)</span>就变成了LL
+Case，然后只需要右旋<span class="math inline">\(g\)</span>并交换<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(g\)</span>的颜色。</figcaption>
+</figure></li>
+<li><p>RR Case(<span class="math inline">\(x\)</span>是右孩子，<span
+class="math inline">\(p\)</span>是右孩子)：这个情况和LL
+Case是对称的，结论如图17所示：</p>
+<figure>
+<img src="image_16.png"
+alt="图17 - 叔叔节点是黑色，RR Case：左旋g并交换p和g的颜色。" />
+<figcaption aria-hidden="true">图17 - 叔叔节点是黑色，RR Case：左旋<span
+class="math inline">\(g\)</span>并交换<span
+class="math inline">\(p\)</span>和<span
+class="math inline">\(g\)</span>的颜色。</figcaption>
+</figure></li>
+<li><p>LR Case(<span class="math inline">\(x\)</span>是左孩子，<span
+class="math inline">\(p\)</span>是右孩子)：这个情况和RL
+Case是对称的，结论如图18所示：</p>
+<figure>
+<img src="image_17.png"
+alt="图18 - 叔叔节点是黑色，LR Case：先右旋p，再左旋g并交换x和g的颜色。" />
+<figcaption aria-hidden="true">图18 - 叔叔节点是黑色，LR
+Case：先右旋<span class="math inline">\(p\)</span>，再左旋<span
+class="math inline">\(g\)</span>并交换<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(g\)</span>的颜色。</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<p>叔叔节点为黑色的四种情况下，由于最终局部根节点都变成了黑色，因此不需要继续递归修复，而叔叔节点为红色的情况由于局部根节点变成了红色，因此需要继续递归修复。</p></li>
+</ul>
+<p>需要注意的是在做旋转操作时要处理好旋转的节点是根节点的边界情况，在写红黑树的时候会遇到很多需要非常小心的边界情况，小心分析即可。</p>
+<h2 id="删除操作">删除操作</h2>
+<p>删除操作则是红黑树操作中最复杂的了，这里也是作为压轴来讲，关键在于两个问题：</p>
+<p>问题1：删除的节点可能是树中间任何一个节点，而根据之前的修复策略是从底部到顶部进行修复，也就是说得想办法把删除任意节点的问题转变成删除叶子节点的问题。</p>
+<p>问题2：之前提到了优先保证条件5的成立，但是删除一个节点如何保证条件5仍然成立呢，所以需要一些取巧的方式去做删除操作。</p>
+<p>先来总结一下删除节点可能发生的情况：</p>
+<p>情况1：删除的是红色的叶子节点，这是最简单的情况，直接删除即可，不会破坏任何红黑树的条件。</p>
+<p>情况2：删除的是黑色的叶子节点，嗯，这明显是一个很复杂的情况。</p>
+<p>情况3：删除的是内部节点，有办法将它变成1,2两种情况吗？</p>
+<p>现讨论一下情况3，如果删除的是内部节点，这意味着删除的节点至少有一个孩子节点，而这又意味着在以该节点为局部根节点的子树中，存在一个前驱节点或后继节点且一定是叶子节点，那么只需要将前驱节点或后继节点的数据和该节点交换，然后再改为删除这个前驱节点和后继节点，这样就变成了1,2两种情况了。</p>
+<p>假设删除的节点为<span
+class="math inline">\(x\)</span>，归纳一下就是：</p>
+<p>如果<span
+class="math inline">\(x\)</span>存在左孩子，那么左孩子的RightMost节点就是前驱节点；如果<span
+class="math inline">\(x\)</span>存在右孩子，那么右孩子的LeftMost节点就是后继节点。</p>
+<p>上述公理是非常基础的，这里不会展开讲，总之这样就将情况3转变成了情况1和情况2，同时也解决了问题1，而情况1非常简单，这样就只需要分析一下情况2就行了。</p>
+<p>那么这就引来了问题2，如何优先保证条件5的成立，然后再从底部往顶部修复呢？其实之前在讲Pull/Push
+Black章节里面有提到，引入一个新的概念，被删除的节点被视为双黑(Double-Black)节点，其颜色值为<span
+class="math inline">\(2\)</span>，为什么颜色值为<span
+class="math inline">\(2\)</span>呢，因为被删除的节点本身原本有两个NIL节点，算上它自身的黑色，意味着它的局部Black-Height是<span
+class="math inline">\(2\)</span>，而现在要删除这个节点，那么只需要将其变成黑色(颜色值为<span
+class="math inline">\(1\)</span>)，此时它就可以变成NIL节点，就可以安全地将其删除了。</p>
+<p>和插入操作类似，由于是递归修复，因此要考虑的是任意情况，假设待修复节点为<span
+class="math inline">\(x\)</span>，那么<span
+class="math inline">\(x\)</span>一定是双黑节点。在删除一个黑色叶子节点时，<span
+class="math inline">\(x\)</span>从该黑色叶子节点开始。</p>
+<p>仔细一想，这个情况就复杂地多，该如何开始呢？首先因为<span
+class="math inline">\(x\)</span>是双黑节点，这说明它的兄弟节点一定是存在的，否则左右的局部Black-Height肯定不可能相等，那如果兄弟节点是黑色的就有可能执行Pull
+Black，但是还要满足什么情况呢，那就是兄弟节点的孩子节点也都为黑色的情况，来看一下。</p>
+<ul>
+<li><p>兄弟节点为黑色且兄弟节点的孩子节点都为黑色，此时情况如图19所示：</p>
+<figure>
+<img src="image_18.png"
+alt="图19 - 兄弟节点为黑色且兄弟节点的孩子节点都为黑色。" />
+<figcaption aria-hidden="true">图19 -
+兄弟节点为黑色且兄弟节点的孩子节点都为黑色。</figcaption>
+</figure>
+<p>这个时候，虽然<span
+class="math inline">\(p\)</span>既可能是红色又可能是黑色，但是不论如何都可以对<span
+class="math inline">\(p\)</span>进行Pull Black操作，如果<span
+class="math inline">\(p\)</span>为红色，那么情况会如图20所示：</p>
+<figure>
+<img src="image_19.png"
+alt="图20 - p为红色并执行\textrm{PullBlack}(p)" />
+<figcaption aria-hidden="true">图20 - <span
+class="math inline">\(p\)</span>为红色并执行<span
+class="math inline">\(\textrm{PullBlack}(p)\)</span></figcaption>
+</figure>
+<p>此时待修复节点变成了黑色，且<span
+class="math inline">\(p\)</span>只是变成了黑色，完美达成了修复，而如果<span
+class="math inline">\(p\)</span>节点本身为黑色，那么这次修复会将<span
+class="math inline">\(p\)</span>变成双黑节点，那么也只需要继续递归修复<span
+class="math inline">\(p\)</span>节点即可。</p>
+<p>这显然是最简单的情况，且与<span
+class="math inline">\(x\)</span>是左右孩子无关。</p>
+<p>但是如果<span
+class="math inline">\(sl,sr\)</span>任意一个节点为红色，这个策略就失效了，因为这会导致<span
+class="math inline">\(s\)</span>的局部子树破坏了条件4，那么就来考虑一下<span
+class="math inline">\(sl,sr\)</span>存在红色该怎么处理吧，而如果你先考虑<span
+class="math inline">\(sl\)</span>为红色的情况的话容易陷入死胡同，所以不妨先考虑<span
+class="math inline">\(sr\)</span>为红色的情况。</p></li>
+<li><p><span
+class="math inline">\(x\)</span>是左孩子，兄弟节点为黑色，且兄弟节点的右孩子为红色，LR
+Case，此时情况如图21所示：</p>
+<figure>
+<img src="image_20.png"
+alt="图21 - x是左孩子，兄弟节点为黑色且兄弟节点的右孩子为红色，LR Case。" />
+<figcaption aria-hidden="true">图21 - <span
+class="math inline">\(x\)</span>是左孩子，兄弟节点为黑色且兄弟节点的右孩子为红色，LR
+Case。</figcaption>
+</figure>
+<p>既然Pull/Push
+Black策略行不通，就尝试一下插入操作里面用到的旋转策略，比如对上图<span
+class="math inline">\(p\)</span>进行左旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色后会得到图22的结果：</p>
+<figure>
+<img src="image_21.png" alt="图22 - 对p进行左旋并交换s和p的颜色" />
+<figcaption aria-hidden="true">图22 - 对<span
+class="math inline">\(p\)</span>进行左旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色</figcaption>
+</figure>
+<p>乍看好像有点怪，不过此时如果将<span
+class="math inline">\(x\)</span>标黑，左侧的局部Black-Height仍然为<span
+class="math inline">\(n+1\)</span>，而右侧只需要将<span
+class="math inline">\(sr\)</span>标黑也能得到<span
+class="math inline">\(n+1\)</span>的局部Black-Height，且标黑是安全的操作，因此这个方案是可行的，总结下来如图23所示：</p>
+<figure>
+<img src="image_22.png"
+alt="图23 - LR Case：对p进行左旋并交换s和p的颜色，然后再将x和sr标为黑色。" />
+<figcaption aria-hidden="true">图23 - LR Case：对<span
+class="math inline">\(p\)</span>进行左旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色，然后再将<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(sr\)</span>标为黑色。</figcaption>
+</figure>
+<p>接下来就可以来考虑另一种情况了。</p></li>
+<li><p><span
+class="math inline">\(x\)</span>是左孩子，兄弟节点为黑色，且兄弟节点的左孩子为红色，LL
+Case，此时情况如图24所示：</p>
+<figure>
+<img src="image_23.png"
+alt="图24 - x是左孩子，兄弟节点为黑色且兄弟节点的左孩子为红色。" />
+<figcaption aria-hidden="true">图24 - <span
+class="math inline">\(x\)</span>是左孩子，兄弟节点为黑色且兄弟节点的左孩子为红色。</figcaption>
+</figure>
+<p>如果先考虑这个情况，那很容易被找不着北，但是在已经有了上一种情况的解决方案后，这个情况的解决方案也会变得非常明显，如果先对<span
+class="math inline">\(s\)</span>进行右旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(sl\)</span>的颜色就能把情况变成上一种情况，所以解决方案如图25所示：</p>
+<figure>
+<img src="image_24.png"
+alt="图25 - LL Case：对s进行右旋并交换s和sl的颜色，这就变成了LR Case，剩下的画不下了，参考LR Case的做法。" />
+<figcaption aria-hidden="true">图25 - LL Case：对<span
+class="math inline">\(s\)</span>进行右旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(sl\)</span>的颜色，这就变成了LR
+Case，剩下的画不下了，参考LR Case的做法。</figcaption>
+</figure>
+<p>可以看出不论是LR Case还是LL
+Case都是和另一个孩子节点的颜色无关的，因此在编码时可以任选一种优先级。</p></li>
+<li><p><span
+class="math inline">\(x\)</span>是右孩子，兄弟节点为黑色且兄弟节点的左孩子为红色，RL
+Case，这个情况和LR Case是对称的，因此解决方案如图26所示：</p>
+<figure>
+<img src="image_25.png"
+alt="图26 - RL Case：对p进行右旋并交换s和p的颜色，然后再将x和sl标为黑色。" />
+<figcaption aria-hidden="true">图26 - RL Case：对<span
+class="math inline">\(p\)</span>进行右旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色，然后再将<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(sl\)</span>标为黑色。</figcaption>
+</figure></li>
+<li><p><span
+class="math inline">\(x\)</span>是右孩子，兄弟节点为黑色且兄弟节点的右孩子为红色，RR
+Case，这个情况和LL Case是对称的，因此解决方案如图27所示：</p>
+<figure>
+<img src="image_26.png"
+alt="图27 - LL Case：对s进行左旋并交换s和sr的颜色，这就变成了RL Case，剩下的画不下了，参考RL Case的做法。" />
+<figcaption aria-hidden="true">图27 - LL Case：对<span
+class="math inline">\(s\)</span>进行左旋并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(sr\)</span>的颜色，这就变成了RL
+Case，剩下的画不下了，参考RL Case的做法。</figcaption>
+</figure></li>
+</ul>
+<p>可以看出除了第一种，接下来的四种情况都不需要进行递归修复，因为并没有出现新的双黑节点。但是还漏了兄弟节点为红色的情况，这个时候父节点一定是黑色，这两种情况比较特别，下面来分析一下：</p>
+<ul>
+<li><p><span class="math inline">\(x\)</span>是左孩子，兄弟节点为红色，L
+Case，此时情况如图28所示：</p>
+<figure>
+<img src="image_27.png" alt="图28 - x是左孩子，兄弟节点为红色。" />
+<figcaption aria-hidden="true">图28 - <span
+class="math inline">\(x\)</span>是左孩子，兄弟节点为红色。</figcaption>
+</figure>
+<p>如果对<span class="math inline">\(p\)</span>进行左旋操作并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色，你会发现这个时候仍然满足条件5，但是会出现一些微妙的变化，因为<span
+class="math inline">\(s\)</span>的孩子节点一定是黑色的，这意味着做了上述旋转操作后，<span
+class="math inline">\(x\)</span>所在的情况变成了兄弟节点为黑色的情况，如图29所示：</p>
+<figure>
+<img src="image_28.png"
+alt="图29 - L Case：对p进行左旋操作并交换s和p的颜色，转换成了1,2,3三种Case之一。" />
+<figcaption aria-hidden="true">图29 - L Case：对<span
+class="math inline">\(p\)</span>进行左旋操作并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色，转换成了1,2,3三种Case之一。</figcaption>
+</figure>
+<p>而这个时候不需要改变待修复节点<span
+class="math inline">\(x\)</span>，继续再修复一次<span
+class="math inline">\(x\)</span>即可。</p></li>
+<li><p><span class="math inline">\(x\)</span>是右孩子，兄弟节点为红色，R
+Case，这种情况和L Case是对称的，解决方案如图30所示：</p>
+<figure>
+<img src="image_29.png"
+alt="图30 - R Case：对p进行右旋操作并交换s和p的颜色，转换成了1,4,5三种Case之一。" />
+<figcaption aria-hidden="true">图30 - R Case：对<span
+class="math inline">\(p\)</span>进行右旋操作并交换<span
+class="math inline">\(s\)</span>和<span
+class="math inline">\(p\)</span>的颜色，转换成了1,4,5三种Case之一。</figcaption>
+</figure>
+<p>和L Case一样，不需要改变待修复节点<span
+class="math inline">\(x\)</span>，继续再修复一次即可。</p></li>
+</ul>
+<p>至此所有的删除情况就都考虑到了，最后别忘记把最初的待删除节点删掉。删除的复杂性在于很难思考各种情况的顺序，不同情况之间都是可以嵌套使用的，但是有了这种方法，不用特地去死记硬背，如果忘记了就自己尝试着推理一下，心里有个大概的话，这种分析就不会很难了。</p>
+<h1 id="总结">总结</h1>
+<p>红黑树的修复思路基本就讲完了，实际编码的过程中其实还有很多需要考虑的细节，比如递归的时候如何处理根节点，或者是各种解绑和绑定的操作，指针修改的顺序等等，这些都是要非常小心的，编码完成后记得写个单元测试，随机取<span
+class="math inline">\(1000000\)</span>个不同的数字进行增删等操作，最好在每次循环都提前记录一下当前的随机种子，写好断言，如果出现问题就打印出最新的随机种子，从而重现现场，方便查找bug。</p>
+<p>虽然基本大部分引擎中都已经有实现了类似SortedSet这样的数据结构，但是很多时候会需要实现特定情形下的区间树，而这个时候可能就需要自己去实现一棵红黑树，而一棵泛用的区间树也是很难实现的，至少笔者在尝试的过程中遇到了不少问题，不管如何，思路始终是最重要的，学习思路比死记硬背要更加重要，望共勉。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithms/" rel="tag"># Algorithms</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/21/program-design/" rel="prev" title="程序设计那些事">
+                  <i class="fa fa-chevron-left"></i> 程序设计那些事
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Winder</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
