@@ -128,7 +128,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-Fundamentals"><span class="nav-number">1.</span> <span class="nav-text">基本概念(Fundamentals)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E7%9A%84%E5%8F%8D%E5%B0%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">光的反射模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%96%B9%E7%A8%8B-The-Rendering-Equation-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">渲染方程(The Rendering Equation)的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E4%BD%93%E8%A7%92-Solid-Angle"><span class="nav-number">1.3.</span> <span class="nav-text">立体角(Solid Angle)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%90%E5%B0%84%E5%BA%A6%E9%87%8F%E5%AD%A6-Radiometry"><span class="nav-number">1.4.</span> <span class="nav-text">辐射度量学(Radiometry)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%96%B9%E7%A8%8B-The-Reflectance-Equation"><span class="nav-number">2.</span> <span class="nav-text">反射方程(The Reflectance Equation)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lambert%E2%80%99s-Cosine-Law"><span class="nav-number">2.1.</span> <span class="nav-text">Lambert’s Cosine Law</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-BRDF"><span class="nav-number">2.2.</span> <span class="nav-text">The BRDF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E8%A1%A8%E9%9D%A2%E7%90%86%E8%AE%BA-Microfacet-Theory"><span class="nav-number">3.</span> <span class="nav-text">微表面理论(Microfacet Theory)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%97%E7%B3%99%E5%BA%A6-Roughness"><span class="nav-number">3.1.</span> <span class="nav-text">粗糙度(Roughness)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Masking-Shadowing-Interreflecting"><span class="nav-number">3.2.</span> <span class="nav-text">Masking, Shadowing, Interreflecting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%95%E7%BA%BF%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0-Normal-Distribution-Function"><span class="nav-number">3.3.</span> <span class="nav-text">法线分布函数(Normal Distribution Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%87%BD%E6%95%B0-Geometry-Function"><span class="nav-number">3.4.</span> <span class="nav-text">几何函数(Geometry Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%BE%AE%E8%A1%A8%E9%9D%A2%E7%9A%84BRDF"><span class="nav-number">3.5.</span> <span class="nav-text">基于微表面的BRDF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-Summary"><span class="nav-number">4.</span> <span class="nav-text">总结(Summary)</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5fundamentals"><span class="nav-number">1.</span> <span class="nav-text">基本概念(Fundamentals)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E7%9A%84%E5%8F%8D%E5%B0%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">光的反射模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%96%B9%E7%A8%8Bthe-rendering-equation%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">渲染方程(The Rendering
+Equation)的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E4%BD%93%E8%A7%92solid-angle"><span class="nav-number">1.3.</span> <span class="nav-text">立体角(Solid Angle)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%90%E5%B0%84%E5%BA%A6%E9%87%8F%E5%AD%A6radiometry"><span class="nav-number">1.4.</span> <span class="nav-text">辐射度量学(Radiometry)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%96%B9%E7%A8%8Bthe-reflectance-equation"><span class="nav-number">2.</span> <span class="nav-text">反射方程(The Reflectance
+Equation)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lamberts-cosine-law"><span class="nav-number">2.1.</span> <span class="nav-text">Lambert’s Cosine Law</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-brdf"><span class="nav-number">2.2.</span> <span class="nav-text">The BRDF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E8%A1%A8%E9%9D%A2%E7%90%86%E8%AE%BAmicrofacet-theory"><span class="nav-number">3.</span> <span class="nav-text">微表面理论(Microfacet Theory)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%97%E7%B3%99%E5%BA%A6roughness"><span class="nav-number">3.1.</span> <span class="nav-text">粗糙度(Roughness)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#masking-shadowing-interreflecting"><span class="nav-number">3.2.</span> <span class="nav-text">Masking, Shadowing,
+Interreflecting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%95%E7%BA%BF%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0normal-distribution-function"><span class="nav-number">3.3.</span> <span class="nav-text">法线分布函数(Normal
+Distribution Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%87%BD%E6%95%B0geometry-function"><span class="nav-number">3.4.</span> <span class="nav-text">几何函数(Geometry Function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%BE%AE%E8%A1%A8%E9%9D%A2%E7%9A%84brdf"><span class="nav-number">3.5.</span> <span class="nav-text">基于微表面的BRDF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93summary"><span class="nav-number">4.</span> <span class="nav-text">总结(Summary)</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -216,172 +220,534 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="基本概念-Fundamentals"><a href="#基本概念-Fundamentals" class="headerlink" title="基本概念(Fundamentals)"></a>基本概念(Fundamentals)</h1><p>在图形学的早期发展中，业界大佬们一直在研究光照模型，各种光照模型层出不穷，但是一直苦于无法将其整合成一个统一的公式，直到1986年，<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/James_Kajiya">James Kajiya</a>等人发表了一篇称为《The Rendering Equation》的论文，论文标题短小却直击本质，这篇论文提出了大名鼎鼎的渲染方程(The Rendering Equation)，为现代图形学奠定了基础。</p>
-<h2 id="光的反射模型"><a href="#光的反射模型" class="headerlink" title="光的反射模型"></a>光的反射模型</h2><p>先简单复习一下光的反射模型，我们考虑一下一束光打到光滑表面上的情况，此时光线会反射到一个单一方向上(镜面反射)，但是实际上并不存在绝对光滑的物体，真实的情况是，除了镜面反射的那部分光线，微观上物体表面会更加粗糙，会有一部分光线会被反射到各个方向上(漫反射)，甚至还有有一部分进入物体，和物体的分子之间相互作用，一部分可能被物体吸收，一部分可能会穿过物体(半透明物体)，另一部分可能经过多次碰撞后又重新反射出表面(次表面散射)。</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="基本概念fundamentals">基本概念(Fundamentals)</h1>
+<p>在图形学的早期发展中，业界大佬们一直在研究光照模型，各种光照模型层出不穷，但是一直苦于无法将其整合成一个统一的公式，直到1986年，<a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/James_Kajiya">James
+Kajiya</a>等人发表了一篇称为《The Rendering
+Equation》的论文，论文标题短小却直击本质，这篇论文提出了大名鼎鼎的渲染方程(The
+Rendering Equation)，为现代图形学奠定了基础。</p>
+<h2 id="光的反射模型">光的反射模型</h2>
+<p>先简单复习一下光的反射模型，我们考虑一下一束光打到光滑表面上的情况，此时光线会反射到一个单一方向上(镜面反射)，但是实际上并不存在绝对光滑的物体，真实的情况是，除了镜面反射的那部分光线，微观上物体表面会更加粗糙，会有一部分光线会被反射到各个方向上(漫反射)，甚至还有有一部分进入物体，和物体的分子之间相互作用，一部分可能被物体吸收，一部分可能会穿过物体(半透明物体)，另一部分可能经过多次碰撞后又重新反射出表面(次表面散射)。</p>
 <p>一般而言，会有大部分的光线集中在靠近镜面反射方向的地方，这部分我们称之为高光反射(Specular)，高光也有资料里面称为Spread，被微观粗糙的部分反射到各个方向上，这部分我们称之为漫反射(Diffuse)，如图1所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_0.png" alt="图1 - 光线的旅程"></p>
-<h2 id="渲染方程-The-Rendering-Equation-的定义"><a href="#渲染方程-The-Rendering-Equation-的定义" class="headerlink" title="渲染方程(The Rendering Equation)的定义"></a>渲染方程(The Rendering Equation)的定义</h2><p>渲染方程表达了什么呢？从结论上来看非常简单，渲染方程计算了某个点在某个出射光方向上的光的总能量是多少，如图2所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_1.png" alt="图2 - 在点$\textbf x$处会收到来自四面八方的光的能量并反射到四面八方去，但是这里我们只考虑在出射角度为$\omega_o$的情况下，出射的能量是多少。"></p>
+<figure>
+<img src="image_0.png" alt="图1 - 光线的旅程" />
+<figcaption aria-hidden="true">图1 - 光线的旅程</figcaption>
+</figure>
+<h2 id="渲染方程the-rendering-equation的定义">渲染方程(The Rendering
+Equation)的定义</h2>
+<p>渲染方程表达了什么呢？从结论上来看非常简单，渲染方程计算了某个点在某个出射光方向上的光的总能量是多少，如图2所示。</p>
+<figure>
+<img src="image_1.png"
+alt="图2 - 在点\textbf x处会收到来自四面八方的光的能量并反射到四面八方去，但是这里我们只考虑在出射角度为\omega_o的情况下，出射的能量是多少。" />
+<figcaption aria-hidden="true">图2 - 在点<span
+class="math inline">\(\textbf
+x\)</span>处会收到来自四面八方的光的能量并反射到四面八方去，但是这里我们只考虑在出射角度为<span
+class="math inline">\(\omega_o\)</span>的情况下，出射的能量是多少。</figcaption>
+</figure>
 <p>有了渲染方程，我们就可以计算出视角方向上收到的所有能量，而颜色正是能量的反馈，因此我们就能计算出正确的颜色值。</p>
 <p>渲染方程将所有光照模型统一成一个公式，即：</p>
-<p>$$<br>L_o(\textbf x,\omega_o)&#x3D;L_e(\textbf x,\omega_o)+L_r(\textbf x,\omega_o)<br>$$</p>
-<p>其中$L_o(\textbf x,\omega_o)$表示在目标点$\textbf x$处出射方向$\omega_o$上接受到的能量，$L_e(\textbf x,\omega_o)$表示目标点$\textbf x$自身在出射方向$\omega_o$上发射的能量(自发光)，$L_r(\textbf x,\omega_o)$表示在目标点$\textbf x$处所有在出射方向$\omega_o$上接受到的能量(其他光源的能量)。</p>
-<p>$L_r(\textbf x,\omega_o)$是这个方程最关键的部分，它的具体定义为：</p>
-<p>$$<br>L_r(\textbf x,\omega_o)&#x3D;\int_{\omega_i\in\Omega}f_r(\textbf x,\omega_i,\omega_o)L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i<br>$$</p>
-<p>这个等式也有其自己的名字，称为反射方程(The Reflectance Equation)，也是这篇文章要着重讲解的部分，为了理解反射方程，我们需要先了解一些基本概念。</p>
-<h2 id="立体角-Solid-Angle"><a href="#立体角-Solid-Angle" class="headerlink" title="立体角(Solid Angle)"></a>立体角(Solid Angle)</h2><p>在讲立体角之前，我们需要先复习一下弧度(radian)的概念，我们定义单位圆上弧度为$\alpha$对应的弧长也为$\alpha$，那么可以推导出单位弧度为$1&#x2F;2\pi$，假设其对应半径$r$的圆上的弧长为$s$，那么可以得出$\alpha&#x2F;s&#x3D;2\pi&#x2F;2\pi r$，从而推导出$\alpha&#x3D;s&#x2F;r$，如图3所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_2.png" alt="图3 - 平面角的radian定义"></p>
-<p>同理我们将这个概念扩展到三维空间下，三维空间下的立体角称为steradian(简称sr)，我们定义单位球上立体角为$\omega$对应的面积也为$\omega$，那么可以推导出单位立体角为$1&#x2F;4\pi$，假设其对应半径$r$的球上的面积为$A$，那么可以得出$\omega&#x2F;A&#x3D;4\pi&#x2F;4\pi r^2$，从而推导出$\omega&#x3D;A&#x2F;r^2$，如图4所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_3.png" alt="图4 - 立体角的steradian定义"></p>
-<p>立体角的优点不仅在于其形成了球面，假想光的传播形成了一个个球面，而根据能量守恒定律单位面积上的能量会随着距离的增加而减小(与$r^2$成反比)，但是立体角上的能量却是恒定的，如图5所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_4.png" alt="图5 - 在光的传播过程中，立体角上的能量分布始终不变。"></p>
+<p><span class="math display">\[
+L_o(\textbf x,\omega_o)=L_e(\textbf x,\omega_o)+L_r(\textbf x,\omega_o)
+\]</span></p>
+<p>其中<span class="math inline">\(L_o(\textbf
+x,\omega_o)\)</span>表示在目标点<span class="math inline">\(\textbf
+x\)</span>处出射方向<span
+class="math inline">\(\omega_o\)</span>上接受到的能量，<span
+class="math inline">\(L_e(\textbf x,\omega_o)\)</span>表示目标点<span
+class="math inline">\(\textbf x\)</span>自身在出射方向<span
+class="math inline">\(\omega_o\)</span>上发射的能量(自发光)，<span
+class="math inline">\(L_r(\textbf x,\omega_o)\)</span>表示在目标点<span
+class="math inline">\(\textbf x\)</span>处所有在出射方向<span
+class="math inline">\(\omega_o\)</span>上接受到的能量(其他光源的能量)。</p>
+<p><span class="math inline">\(L_r(\textbf
+x,\omega_o)\)</span>是这个方程最关键的部分，它的具体定义为：</p>
+<p><span class="math display">\[
+L_r(\textbf x,\omega_o)=\int_{\omega_i\in\Omega}f_r(\textbf
+x,\omega_i,\omega_o)L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf
+n)d\omega_i
+\]</span></p>
+<p>这个等式也有其自己的名字，称为反射方程(The Reflectance
+Equation)，也是这篇文章要着重讲解的部分，为了理解反射方程，我们需要先了解一些基本概念。</p>
+<h2 id="立体角solid-angle">立体角(Solid Angle)</h2>
+<p>在讲立体角之前，我们需要先复习一下弧度(radian)的概念，我们定义单位圆上弧度为<span
+class="math inline">\(\alpha\)</span>对应的弧长也为<span
+class="math inline">\(\alpha\)</span>，那么可以推导出单位弧度为<span
+class="math inline">\(1/2\pi\)</span>，假设其对应半径<span
+class="math inline">\(r\)</span>的圆上的弧长为<span
+class="math inline">\(s\)</span>，那么可以得出<span
+class="math inline">\(\alpha/s=2\pi/2\pi r\)</span>，从而推导出<span
+class="math inline">\(\alpha=s/r\)</span>，如图3所示。</p>
+<figure>
+<img src="image_2.png" alt="图3 - 平面角的radian定义" />
+<figcaption aria-hidden="true">图3 - 平面角的radian定义</figcaption>
+</figure>
+<p>同理我们将这个概念扩展到三维空间下，三维空间下的立体角称为steradian(简称sr)，我们定义单位球上立体角为<span
+class="math inline">\(\omega\)</span>对应的面积也为<span
+class="math inline">\(\omega\)</span>，那么可以推导出单位立体角为<span
+class="math inline">\(1/4\pi\)</span>，假设其对应半径<span
+class="math inline">\(r\)</span>的球上的面积为<span
+class="math inline">\(A\)</span>，那么可以得出<span
+class="math inline">\(\omega/A=4\pi/4\pi r^2\)</span>，从而推导出<span
+class="math inline">\(\omega=A/r^2\)</span>，如图4所示。</p>
+<figure>
+<img src="image_3.png" alt="图4 - 立体角的steradian定义" />
+<figcaption aria-hidden="true">图4 - 立体角的steradian定义</figcaption>
+</figure>
+<p>立体角的优点不仅在于其形成了球面，假想光的传播形成了一个个球面，而根据能量守恒定律单位面积上的能量会随着距离的增加而减小(与<span
+class="math inline">\(r^2\)</span>成反比)，但是立体角上的能量却是恒定的，如图5所示。</p>
+<figure>
+<img src="image_4.png"
+alt="图5 - 在光的传播过程中，立体角上的能量分布始终不变。" />
+<figcaption aria-hidden="true">图5 -
+在光的传播过程中，立体角上的能量分布始终不变。</figcaption>
+</figure>
 <p>有了立体角之后，我们就不需要考虑光沿直线传播的衰减问题，而通过对立体角微分来表达光的传播方向，因此接下来要介绍微分立体角。</p>
-<p>根据之前立体角的讲解可以得知$\omega&#x3D;A&#x2F;r^2$，那么对两边微分就可以得到$d\omega&#x3D;dA&#x2F;r^2$，那么接下来的问题就转到了如何求$dA$上。</p>
-<p>首先我们需要复习一下球面坐标系(Spherical Coordinate System)，球面坐标系由极角$\theta$(polar angle)、方位角$\varphi$(azimuthal angle)和半径$r$构成，也就是$(r,\theta,\varphi)$，如图6所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_5.png" alt="图6 - 球面坐标系"></p>
-<p>在渲染中，我们需要将法线$\vec n$对齐$z$轴，经过目标点且垂直于法线的平面对齐$xy$平面，球面上某一点与法线的夹角即为极角$\theta$，将目标点投影到$xy$平面上后与$x$轴的夹角为方位角$\phi$。</p>
-<p>我们可以用球面坐标系的两个角度来表示微分立体角，然后通过极角来确定方向。假设某个微分立体角的极角为$d\theta$、方位角为$d\varphi$，球面坐标为$(r,\theta,\varphi)$。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_6.png" alt="图7 - 微分立体角对应的面积微元"></p>
-<p>在微分情况下，我们可以将$dA$近似成一个矩形，根据图7可以看到其两条边分别为$rd\theta$和$r\sin\theta d\varphi$，因此可以推导出$dA&#x3D;r^2\sin\theta d\theta d\varphi$。</p>
-<p>这里也可以简单验证一下，我们对整个球面的$dA$进行积分，得到的应该是$4\pi r^2$，如下所示：</p>
-<p>$$<br>\int_{\varphi&#x3D;0}^{2\pi}\int_{\theta&#x3D;0}^\pi r^2\sin\theta d\theta d\varphi&#x3D;2\pi r^2(-\cos\theta)\mid_0^\pi&#x3D;4\pi r^2<br>$$</p>
-<p>证明公式没有问题后，我们又知道$d\omega&#x3D;dA&#x2F;r^2$，代入可以得到$d\omega&#x3D;\sin\theta d\theta d\varphi$。</p>
-<h2 id="辐射度量学-Radiometry"><a href="#辐射度量学-Radiometry" class="headerlink" title="辐射度量学(Radiometry)"></a>辐射度量学(Radiometry)</h2><p>此外由于渲染方程得到的是能量，我们还需要了解光的能量和颜色之间的关系，才能更好地理解它，为此我们需要引入一个概念：辐射度量学(Radiometry)。</p>
+<p>根据之前立体角的讲解可以得知<span
+class="math inline">\(\omega=A/r^2\)</span>，那么对两边微分就可以得到<span
+class="math inline">\(d\omega=dA/r^2\)</span>，那么接下来的问题就转到了如何求<span
+class="math inline">\(dA\)</span>上。</p>
+<p>首先我们需要复习一下球面坐标系(Spherical Coordinate
+System)，球面坐标系由极角<span
+class="math inline">\(\theta\)</span>(polar angle)、方位角<span
+class="math inline">\(\varphi\)</span>(azimuthal angle)和半径<span
+class="math inline">\(r\)</span>构成，也就是<span
+class="math inline">\((r,\theta,\varphi)\)</span>，如图6所示。</p>
+<figure>
+<img src="image_5.png" alt="图6 - 球面坐标系" />
+<figcaption aria-hidden="true">图6 - 球面坐标系</figcaption>
+</figure>
+<p>在渲染中，我们需要将法线<span class="math inline">\(\vec
+n\)</span>对齐<span
+class="math inline">\(z\)</span>轴，经过目标点且垂直于法线的平面对齐<span
+class="math inline">\(xy\)</span>平面，球面上某一点与法线的夹角即为极角<span
+class="math inline">\(\theta\)</span>，将目标点投影到<span
+class="math inline">\(xy\)</span>平面上后与<span
+class="math inline">\(x\)</span>轴的夹角为方位角<span
+class="math inline">\(\phi\)</span>。</p>
+<p>我们可以用球面坐标系的两个角度来表示微分立体角，然后通过极角来确定方向。假设某个微分立体角的极角为<span
+class="math inline">\(d\theta\)</span>、方位角为<span
+class="math inline">\(d\varphi\)</span>，球面坐标为<span
+class="math inline">\((r,\theta,\varphi)\)</span>。</p>
+<figure>
+<img src="image_6.png" alt="图7 - 微分立体角对应的面积微元" />
+<figcaption aria-hidden="true">图7 -
+微分立体角对应的面积微元</figcaption>
+</figure>
+<p>在微分情况下，我们可以将<span
+class="math inline">\(dA\)</span>近似成一个矩形，根据图7可以看到其两条边分别为<span
+class="math inline">\(rd\theta\)</span>和<span
+class="math inline">\(r\sin\theta d\varphi\)</span>，因此可以推导出<span
+class="math inline">\(dA=r^2\sin\theta d\theta d\varphi\)</span>。</p>
+<p>这里也可以简单验证一下，我们对整个球面的<span
+class="math inline">\(dA\)</span>进行积分，得到的应该是<span
+class="math inline">\(4\pi r^2\)</span>，如下所示：</p>
+<p><span class="math display">\[
+\int_{\varphi=0}^{2\pi}\int_{\theta=0}^\pi r^2\sin\theta d\theta
+d\varphi=2\pi r^2(-\cos\theta)\mid_0^\pi=4\pi r^2
+\]</span></p>
+<p>证明公式没有问题后，我们又知道<span
+class="math inline">\(d\omega=dA/r^2\)</span>，代入可以得到<span
+class="math inline">\(d\omega=\sin\theta d\theta d\varphi\)</span>。</p>
+<h2 id="辐射度量学radiometry">辐射度量学(Radiometry)</h2>
+<p>此外由于渲染方程得到的是能量，我们还需要了解光的能量和颜色之间的关系，才能更好地理解它，为此我们需要引入一个概念：辐射度量学(Radiometry)。</p>
 <p>Radiometry衡量的是一种电磁辐射，辐射是通过波传播的，电磁波拥有不同的波长，其波长可以小到100nm以下，也可以大到上万千米以上，然而人眼所能感知到的波长范围仅在400nm-700nm之间，如图8所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_7.png" alt="图8 - 人眼所能感知到的波长范围在整个电磁波家族中所占比例非常之小"></p>
+<figure>
+<img src="image_7.png"
+alt="图8 - 人眼所能感知到的波长范围在整个电磁波家族中所占比例非常之小" />
+<figcaption aria-hidden="true">图8 -
+人眼所能感知到的波长范围在整个电磁波家族中所占比例非常之小</figcaption>
+</figure>
 <p>Radiometry使用的量化单位具体如下：</p>
 <ul>
 <li><p>Radiant Flux</p>
-<p>  表示单位时间内的辐射能量，用$\phi$表示，单位是$W(Watt)$，之前以及下文提到的能量都是指这个单位。</p>
-<p>  $$<br>  \phi&#x3D;\frac{dQ}{dt}<br>  $$</p>
-</li>
+<p>表示单位时间内的辐射能量，用<span
+class="math inline">\(\phi\)</span>表示，单位是<span
+class="math inline">\(W(Watt)\)</span>，之前以及下文提到的能量都是指这个单位。</p>
+<p><span class="math display">\[
+  \phi=\frac{dQ}{dt}
+  \]</span></p></li>
 <li><p><strong>Irradiance</strong></p>
-<p>  表示单位面积上的能量，用$E$表示，单位是$W&#x2F;m^2$。</p>
-<p>  $$<br>  E&#x3D;\frac{d\phi}{dA}<br>  $$</p>
-</li>
+<p>表示单位面积上的能量，用<span
+class="math inline">\(E\)</span>表示，单位是<span
+class="math inline">\(W/m^2\)</span>。</p>
+<p><span class="math display">\[
+  E=\frac{d\phi}{dA}
+  \]</span></p></li>
 <li><p>Radiant Intensity</p>
-<p>  表示单位立体角上的能量，用$I$表示，单位是$W&#x2F;sr$。</p>
-<p>  $$<br>  I&#x3D;\frac{d\phi}{d\omega}<br>  $$</p>
-</li>
+<p>表示单位立体角上的能量，用<span
+class="math inline">\(I\)</span>表示，单位是<span
+class="math inline">\(W/sr\)</span>。</p>
+<p><span class="math display">\[
+  I=\frac{d\phi}{d\omega}
+  \]</span></p></li>
 <li><p><strong>Radiance</strong></p>
-<p>  表示单位面积单位立体角上的能量，用$L$表示，单位是$W&#x2F;(m^2sr)$。</p>
-<p>  $$<br>  L&#x3D;\frac{d^2\phi}{dAd\omega}&#x3D;\frac{dE}{d\omega}<br>  $$</p>
-</li>
+<p>表示单位面积单位立体角上的能量，用<span
+class="math inline">\(L\)</span>表示，单位是<span
+class="math inline">\(W/(m^2sr)\)</span>。</p>
+<p><span class="math display">\[
+  L=\frac{d^2\phi}{dAd\omega}=\frac{dE}{d\omega}
+  \]</span></p></li>
 </ul>
-<p>在渲染方程中，需要关注的是Irradiance和Radiance这两个概念，根据渲染方程的定义，我们首先要知道目标点上总共的能量，也就是Irradiance，然后再计算这些能量分布到$\omega_o$方向上的能量，也就是Radiance，我们所得到的颜色信息来自Radiance。</p>
+<p>在渲染方程中，需要关注的是Irradiance和Radiance这两个概念，根据渲染方程的定义，我们首先要知道目标点上总共的能量，也就是Irradiance，然后再计算这些能量分布到<span
+class="math inline">\(\omega_o\)</span>方向上的能量，也就是Radiance，我们所得到的颜色信息来自Radiance。</p>
 <p>那么渲染过程就可以这样理解：眼睛和屏幕定义了一个点和一组方向（例如，通过每个像素的光线），并且在每个方向上在眼睛处进行评估，最终得到的叠加后的Radiance就是我们绘制的颜色值。</p>
 <p>或许看过相关资料的朋友会看到有些时候Radiance也有叫Luminance的，各种单位也有另外一套叫法，这其实并没有什么问题，之前提到过光是由许多不同波长的波构成的，但是人眼能感知到的波长是有限的，所谓的Luminance其实也属于另一个度量学称作Photometry，它指的是人眼所能感知到的部分，但是实际上这两种度量学的概念是相同的，并且它们之间的转换是一种常量转换，因此我们在渲染中可以假设能量只包含人眼感知到的那部分，从而简化模型，否则就还要考虑波长等因素了，因此这两种度量方式都是正确的。</p>
 <p>下表列出了Radiometry和Photometry对应的量以及单位。</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Radiometric Quantity: Units</th>
 <th>Photometric Quantity: Units</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>radiant flux: $W(Watt)$</td>
-<td>luminous flux: $lm(lumen)$</td>
+<tbody>
+<tr class="odd">
+<td>radiant flux: <span class="math inline">\(W(Watt)\)</span></td>
+<td>luminous flux: <span class="math inline">\(lm(lumen)\)</span></td>
 </tr>
-<tr>
-<td>irradiance: $W&#x2F;m^2$</td>
-<td>illuminance: $lx(lux)$</td>
+<tr class="even">
+<td>irradiance: <span class="math inline">\(W/m^2\)</span></td>
+<td>illuminance: <span class="math inline">\(lx(lux)\)</span></td>
 </tr>
-<tr>
-<td>radiant intensity: $W&#x2F;sr$</td>
-<td>luminous intensity: $cd(candela)$</td>
+<tr class="odd">
+<td>radiant intensity: <span class="math inline">\(W/sr\)</span></td>
+<td>luminous intensity: <span
+class="math inline">\(cd(candela)\)</span></td>
 </tr>
-<tr>
-<td>radiance: $W&#x2F;(m^2sr)$</td>
-<td>luminance: $nit&#x3D;cd&#x2F;m^2$</td>
+<tr class="even">
+<td>radiance: <span class="math inline">\(W/(m^2sr)\)</span></td>
+<td>luminance: <span class="math inline">\(nit=cd/m^2\)</span></td>
 </tr>
-</tbody></table>
-<h1 id="反射方程-The-Reflectance-Equation"><a href="#反射方程-The-Reflectance-Equation" class="headerlink" title="反射方程(The Reflectance Equation)"></a>反射方程(The Reflectance Equation)</h1><p>了解了上述基础概念之后，我们重新回到反射方程，也就是这部分：</p>
-<p>$$<br>L_r(\textbf x,\omega_o)&#x3D;\int_{\omega_i\in\Omega}f_r(\textbf x,\omega_i,\omega_o)L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i<br>$$</p>
-<p>等式中的积分式是指对以目标点为球心，法线为$z$轴的上半球面进行积分，积分的内容是半球中的每个方向反射到$\omega_o$方向上的能量。</p>
-<p>其中$L_i(\textbf x,\omega_i)$表示某个入射方向$\omega_i$在目标点$\textbf x$处贡献的能量，$f_r(\textbf x,\omega_i,\omega_o)$表示BRDF，$\omega_i\cdot\textbf n$则是由Lambert’s Cosine Law推导而来，我们先来了解一下Lambert’s Cosine Law。</p>
-<h2 id="Lambert’s-Cosine-Law"><a href="#Lambert’s-Cosine-Law" class="headerlink" title="Lambert’s Cosine Law"></a>Lambert’s Cosine Law</h2><p>Lambert提出单位面积上接收到的能量和入射方向与法线夹角的余弦值成正比，通过图9可以更直观地理解它。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_8.png" alt="图9 - Lambert’s Cosine Law：易于理解的方法"></p>
+</tbody>
+</table>
+<h1 id="反射方程the-reflectance-equation">反射方程(The Reflectance
+Equation)</h1>
+<p>了解了上述基础概念之后，我们重新回到反射方程，也就是这部分：</p>
+<p><span class="math display">\[
+L_r(\textbf x,\omega_o)=\int_{\omega_i\in\Omega}f_r(\textbf
+x,\omega_i,\omega_o)L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf
+n)d\omega_i
+\]</span></p>
+<p>等式中的积分式是指对以目标点为球心，法线为<span
+class="math inline">\(z\)</span>轴的上半球面进行积分，积分的内容是半球中的每个方向反射到<span
+class="math inline">\(\omega_o\)</span>方向上的能量。</p>
+<p>其中<span class="math inline">\(L_i(\textbf
+x,\omega_i)\)</span>表示某个入射方向<span
+class="math inline">\(\omega_i\)</span>在目标点<span
+class="math inline">\(\textbf x\)</span>处贡献的能量，<span
+class="math inline">\(f_r(\textbf
+x,\omega_i,\omega_o)\)</span>表示BRDF，<span
+class="math inline">\(\omega_i\cdot\textbf n\)</span>则是由Lambert’s
+Cosine Law推导而来，我们先来了解一下Lambert’s Cosine Law。</p>
+<h2 id="lamberts-cosine-law">Lambert’s Cosine Law</h2>
+<p>Lambert提出单位面积上接收到的能量和入射方向与法线夹角的余弦值成正比，通过图9可以更直观地理解它。</p>
+<figure>
+<img src="image_8.png"
+alt="图9 - Lambert’s Cosine Law：易于理解的方法" />
+<figcaption aria-hidden="true">图9 - Lambert’s Cosine
+Law：易于理解的方法</figcaption>
+</figure>
 <p>从数学模型上来看的话，我们看图10：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_9.png" alt="图10 - Lambert’s Cosine Law：通过数学理解"></p>
-<p>由于$d\omega$方向上Radiance实际上是基于$dA’$的，假设$d\omega_i$方向上的微元面积为$dA_i$，那么$dA$处的Irradiance实际上应该为：</p>
-<p>$$<br>E&#x3D;\frac{\sum_i^\infty L_i(\omega_i)d\omega_idA_i}{dA}<br>$$</p>
-<p>而$dA_i$由于白色虚线上的轴被缩放为$\cos\theta_i$，因此$dA_i&#x3D;\cos\theta_idA$，由此代入上式可以得到：</p>
-<p>$$<br>E&#x3D;\sum_i^\infty L_i(\omega_i)\cos\theta_id\omega_i<br>$$</p>
-<p>而$\cos\theta_i$就是$\omega_i\cdot\textbf n$，使用积分式来表达的话，最终可以概括为点$\textbf x$处接收到的整个半球方向的Irradiance为：</p>
-<p>$$<br>E(\textbf x)&#x3D;\int_{\omega_i\in\Omega}L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i<br>$$</p>
-<p>推导到这一步之后，对于反射方程就只差最后一个部分了，那就是计算出点$\textbf x$处接受到的所有能量中有多少贡献给了目标方向$\omega_o$上，这里就引出了BRDF的概念。</p>
-<h2 id="The-BRDF"><a href="#The-BRDF" class="headerlink" title="The BRDF"></a>The BRDF</h2><p>BRDF全称Bidirectional Reflectance Distribution Function，即双向反射分布方程。BRDF描述了每个入射方向$\omega_i$的能量贡献了多少比例给出射方向$\omega_o$上，离散来看大致就是这样的：</p>
-<p>$$<br>f_r(\textbf x,\omega_o,\omega_i)&#x3D;\begin{cases}<br>  a_0 &amp; \omega_i&#x3D;\omega_0 \<br>  a_1 &amp; \omega_i&#x3D;\omega_1 \<br>  \vdots &amp; \vdots \<br>  a_n &amp;\omega_i&#x3D;\omega_n \ \end{cases}<br>$$</p>
-<p>上述函数中一定有$0\leq a_i\leq1$，这里的$a_i$一般可以理解为反射率，即有多少能量反射了出去，至此我们通过BRDF对每个$\omega_i$方向定义了一个反射率，那么将其加入被积式子中，得到的就是最终$\omega_o$方向上的Radiance了，BRDF的数学定义为：</p>
-<p>$$<br>f_r(\textbf x,\omega_o,\omega_i)&#x3D;\frac{dL_o(\textbf x,\omega_o)}{dE_i(\textbf x,\omega_i)}&#x3D;\frac{dL_o(\textbf x,\omega_o)}{L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i}<br>$$</p>
+<figure>
+<img src="image_9.png"
+alt="图10 - Lambert’s Cosine Law：通过数学理解" />
+<figcaption aria-hidden="true">图10 - Lambert’s Cosine
+Law：通过数学理解</figcaption>
+</figure>
+<p>由于<span
+class="math inline">\(d\omega\)</span>方向上Radiance实际上是基于<span
+class="math inline">\(dA&#39;\)</span>的，假设<span
+class="math inline">\(d\omega_i\)</span>方向上的微元面积为<span
+class="math inline">\(dA_i\)</span>，那么<span
+class="math inline">\(dA\)</span>处的Irradiance实际上应该为：</p>
+<p><span class="math display">\[
+E=\frac{\sum_i^\infty L_i(\omega_i)d\omega_idA_i}{dA}
+\]</span></p>
+<p>而<span
+class="math inline">\(dA_i\)</span>由于白色虚线上的轴被缩放为<span
+class="math inline">\(\cos\theta_i\)</span>，因此<span
+class="math inline">\(dA_i=\cos\theta_idA\)</span>，由此代入上式可以得到：</p>
+<p><span class="math display">\[
+E=\sum_i^\infty L_i(\omega_i)\cos\theta_id\omega_i
+\]</span></p>
+<p>而<span class="math inline">\(\cos\theta_i\)</span>就是<span
+class="math inline">\(\omega_i\cdot\textbf
+n\)</span>，使用积分式来表达的话，最终可以概括为点<span
+class="math inline">\(\textbf
+x\)</span>处接收到的整个半球方向的Irradiance为：</p>
+<p><span class="math display">\[
+E(\textbf x)=\int_{\omega_i\in\Omega}L_i(\textbf
+x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i
+\]</span></p>
+<p>推导到这一步之后，对于反射方程就只差最后一个部分了，那就是计算出点<span
+class="math inline">\(\textbf
+x\)</span>处接受到的所有能量中有多少贡献给了目标方向<span
+class="math inline">\(\omega_o\)</span>上，这里就引出了BRDF的概念。</p>
+<h2 id="the-brdf">The BRDF</h2>
+<p>BRDF全称Bidirectional Reflectance Distribution
+Function，即双向反射分布方程。BRDF描述了每个入射方向<span
+class="math inline">\(\omega_i\)</span>的能量贡献了多少比例给出射方向<span
+class="math inline">\(\omega_o\)</span>上，离散来看大致就是这样的：</p>
+<p><span class="math display">\[
+f_r(\textbf x,\omega_o,\omega_i)=\begin{cases}
+  a_0 &amp; \omega_i=\omega_0 \\
+  a_1 &amp; \omega_i=\omega_1 \\
+  \vdots &amp; \vdots \\
+  a_n &amp;\omega_i=\omega_n \\ \end{cases}
+\]</span></p>
+<p>上述函数中一定有<span class="math inline">\(0\leq
+a_i\leq1\)</span>，这里的<span
+class="math inline">\(a_i\)</span>一般可以理解为反射率，即有多少能量反射了出去，至此我们通过BRDF对每个<span
+class="math inline">\(\omega_i\)</span>方向定义了一个反射率，那么将其加入被积式子中，得到的就是最终<span
+class="math inline">\(\omega_o\)</span>方向上的Radiance了，BRDF的数学定义为：</p>
+<p><span class="math display">\[
+f_r(\textbf x,\omega_o,\omega_i)=\frac{dL_o(\textbf
+x,\omega_o)}{dE_i(\textbf x,\omega_i)}=\frac{dL_o(\textbf
+x,\omega_o)}{L_i(\textbf x,\omega_i)(\omega_i\cdot\textbf n)d\omega_i}
+\]</span></p>
 <p>BRDF描述的是材质的一种反射特性，根据材质的性质还可以将BRDF分为各向同性(Isotropic)的BRDF和各向异性(Anisotropic)的BRDF，这一部分会在微表面部分讲解。</p>
 <p>严格来说，BRDF会受到物理性质的约束，使其遵循两点规律，即Helmholtz互易性和能量守恒。</p>
 <p>Helmholtz互易性表示BRDF的入射方向和出射方向可以交换且函数的返回值相同，即：</p>
-<p>$$<br>f_r(\textbf x,\omega_o,\omega_i)&#x3D;f_r(\textbf x,\omega_i,\omega_o)<br>$$</p>
-<p>换个说法，我们可以考虑半球范围$\Omega$的入射能量如何分布到某个出射方向$\omega_o$上，也可以考虑某个入射方向$\omega_i$上的能量如何分布到半球范围$\Omega$中，而它们的分布方式是相同的。然而实际上在实时渲染中，这个性质一般并没有完全遵守而只是近似，这样就已经能模拟出比较真实的结果了。</p>
+<p><span class="math display">\[
+f_r(\textbf x,\omega_o,\omega_i)=f_r(\textbf x,\omega_i,\omega_o)
+\]</span></p>
+<p>换个说法，我们可以考虑半球范围<span
+class="math inline">\(\Omega\)</span>的入射能量如何分布到某个出射方向<span
+class="math inline">\(\omega_o\)</span>上，也可以考虑某个入射方向<span
+class="math inline">\(\omega_i\)</span>上的能量如何分布到半球范围<span
+class="math inline">\(\Omega\)</span>中，而它们的分布方式是相同的。然而实际上在实时渲染中，这个性质一般并没有完全遵守而只是近似，这样就已经能模拟出比较真实的结果了。</p>
 <p>能量守恒意味着出射能量不能大于入射能量(不包括自发光)，离线渲染算法，如路径追踪，需要准确的能量守恒以确保收敛性，然而对于实时渲染，近似的能量守恒很重要，但不需要完全精确，如果使用违反能量守恒的BRDF渲染表面，它将显得不够真实。</p>
-<p>结合BRDF我们可以计算一些其他的属性，比如半球-方向反射率(Hemispherical-Directional Reflectance)，其测量了半球范围内的能量经过目标点后反射到某个方向上的能量损失，其数学定义为：</p>
-<p>$$<br>R(\omega_o)&#x3D;\int_{\omega_i\in\Omega}f_r(\textbf x,\omega_i,\omega_o)(\omega_i\cdot\textbf n)d\omega_i<br>$$</p>
-<p>同样的也有方向-半球反射率(Directional-Hemispherical Reflectance)，其测量了某个方向经过目标点后反射到半球范围内的能量损失，其数学定义为：</p>
-<p>$$<br>R(\omega_i)&#x3D;\int_{\omega_o\in\Omega}f_r(\textbf x,\omega_i,\omega_o)(\omega_o\cdot\textbf n)d\omega_o<br>$$</p>
-<p>很显然，如果BRDF是互易的，那么这两种反射率相同：$R(\omega_i)&#x3D;R(\omega_o)$。</p>
-<p>我们也可以使用球面坐标系的极角和方位角来表示反射方程，我们前面已经推导过$d\omega&#x3D;\sin\theta d\theta d\phi$，代入反射方程可以得到：</p>
-<p>$$<br>\int_{\varphi_i&#x3D;0}^{2\pi}\int_{\theta_i&#x3D;0}^{\pi&#x2F;2} f_r(\textbf x,\theta_o,\varphi_o,\theta_i,\varphi_i)L_i(\textbf x,\theta_i,\varphi_i)\cos\theta_i\sin\theta_id\theta_id\varphi_i<br>$$</p>
-<p>这样整个模型就变成了考虑极角和方位角的情形，之后推导其他公式为了简洁会将$\textbf x$省略。</p>
+<p>结合BRDF我们可以计算一些其他的属性，比如半球-方向反射率(Hemispherical-Directional
+Reflectance)，其测量了半球范围内的能量经过目标点后反射到某个方向上的能量损失，其数学定义为：</p>
+<p><span class="math display">\[
+R(\omega_o)=\int_{\omega_i\in\Omega}f_r(\textbf
+x,\omega_i,\omega_o)(\omega_i\cdot\textbf n)d\omega_i
+\]</span></p>
+<p>同样的也有方向-半球反射率(Directional-Hemispherical
+Reflectance)，其测量了某个方向经过目标点后反射到半球范围内的能量损失，其数学定义为：</p>
+<p><span class="math display">\[
+R(\omega_i)=\int_{\omega_o\in\Omega}f_r(\textbf
+x,\omega_i,\omega_o)(\omega_o\cdot\textbf n)d\omega_o
+\]</span></p>
+<p>很显然，如果BRDF是互易的，那么这两种反射率相同：<span
+class="math inline">\(R(\omega_i)=R(\omega_o)\)</span>。</p>
+<p>我们也可以使用球面坐标系的极角和方位角来表示反射方程，我们前面已经推导过<span
+class="math inline">\(d\omega=\sin\theta d\theta
+d\phi\)</span>，代入反射方程可以得到：</p>
+<p><span class="math display">\[
+\int_{\varphi_i=0}^{2\pi}\int_{\theta_i=0}^{\pi/2} f_r(\textbf
+x,\theta_o,\varphi_o,\theta_i,\varphi_i)L_i(\textbf
+x,\theta_i,\varphi_i)\cos\theta_i\sin\theta_id\theta_id\varphi_i
+\]</span></p>
+<p>这样整个模型就变成了考虑极角和方位角的情形，之后推导其他公式为了简洁会将<span
+class="math inline">\(\textbf x\)</span>省略。</p>
 <p>我们可以再结合图11理解一下BRDF的含义。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_10.png" alt="图11 - 从左到右依次展示了Lambertian BRDF、Blinn-Phong BRDF和Cook-Torrance BRDF。"></p>
+<figure>
+<img src="image_10.png"
+alt="图11 - 从左到右依次展示了Lambertian BRDF、Blinn-Phong BRDF和Cook-Torrance BRDF。" />
+<figcaption aria-hidden="true">图11 - 从左到右依次展示了Lambertian
+BRDF、Blinn-Phong BRDF和Cook-Torrance BRDF。</figcaption>
+</figure>
 <p>我们接下来来讲一个最简单的BRDF：Lambertian BRDF。</p>
-<p>Lambertian BRDF是一种最简单的光照模型，它假设光线击中表面后向所有方向均匀反射，所以BRDF是个常数，我们定义目标点处的半球-方向反射率为$\rho_{ss}$，则有：</p>
-<p>$$<br>\begin{align*}&amp;\rho_{ss}&#x3D;\int_{\varphi_i&#x3D;0}^{2\pi}\int_{\theta_i&#x3D;0}^{\pi&#x2F;2} f_r\cos\theta_i\sin\theta_id\theta_id\varphi_i\\Rightarrow &amp;\rho_{ss}&#x3D;2\pi f_r\int_{\theta_i&#x3D;0}^{\pi&#x2F;2}\sin\theta_id(\sin\theta_i)\\Rightarrow &amp;\rho_{ss}&#x3D;2\pi f_r(\frac12\sin^2\theta)|<em>0^{\pi&#x2F;2}\\Rightarrow &amp;f_r&#x3D;\frac{\rho</em>{ss}}{\pi}\end{align*}<br>$$</p>
+<p>Lambertian
+BRDF是一种最简单的光照模型，它假设光线击中表面后向所有方向均匀反射，所以BRDF是个常数，我们定义目标点处的半球-方向反射率为<span
+class="math inline">\(\rho_{ss}\)</span>，则有：</p>
+<p><span class="math display">\[
+\begin{align*}&amp;\rho_{ss}=\int_{\varphi_i=0}^{2\pi}\int_{\theta_i=0}^{\pi/2}
+f_r\cos\theta_i\sin\theta_id\theta_id\varphi_i\\\Rightarrow
+&amp;\rho_{ss}=2\pi
+f_r\int_{\theta_i=0}^{\pi/2}\sin\theta_id(\sin\theta_i)\\\Rightarrow
+&amp;\rho_{ss}=2\pi f_r(\frac12\sin^2\theta)|_0^{\pi/2}\\\Rightarrow
+&amp;f_r=\frac{\rho_{ss}}{\pi}\end{align*}
+\]</span></p>
 <p>这样就推导出了Lambertian BRDF为：</p>
-<p>$$<br>f_{lambertian}&#x3D;\frac{\rho_{ss}}{\pi}<br>$$</p>
-<h1 id="微表面理论-Microfacet-Theory"><a href="#微表面理论-Microfacet-Theory" class="headerlink" title="微表面理论(Microfacet Theory)"></a>微表面理论(Microfacet Theory)</h1><p>由于微观结构的尺寸远小于像素，因此无法直接建模，我们需要对其进行统计建模，而微表面理论(Microfacet Theory)则是基于微观几何的一种模型，即我们把目标点视为由许许多多个微表面构成的，每个微表面拥有自己的法线，并各自独立地反射光线，微表面模型如图12所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_11.png" alt="图12 - 微表面模型"></p>
-<p>一般我们用$\textbf m$表示微表面法线，入射角和反射角用$\theta_m$表示。</p>
+<p><span class="math display">\[
+f_{lambertian}=\frac{\rho_{ss}}{\pi}
+\]</span></p>
+<h1 id="微表面理论microfacet-theory">微表面理论(Microfacet Theory)</h1>
+<p>由于微观结构的尺寸远小于像素，因此无法直接建模，我们需要对其进行统计建模，而微表面理论(Microfacet
+Theory)则是基于微观几何的一种模型，即我们把目标点视为由许许多多个微表面构成的，每个微表面拥有自己的法线，并各自独立地反射光线，微表面模型如图12所示：</p>
+<figure>
+<img src="image_11.png" alt="图12 - 微表面模型" />
+<figcaption aria-hidden="true">图12 - 微表面模型</figcaption>
+</figure>
+<p>一般我们用<span class="math inline">\(\textbf
+m\)</span>表示微表面法线，入射角和反射角用<span
+class="math inline">\(\theta_m\)</span>表示。</p>
 <p>对于大多数表面，微几何表面的法线分布是连续的，并在宏观表面法线处具有强烈的峰值，这个分布的紧密程度是由表面的粗糙度(roughness)决定的。</p>
-<h2 id="粗糙度-Roughness"><a href="#粗糙度-Roughness" class="headerlink" title="粗糙度(Roughness)"></a>粗糙度(Roughness)</h2><p>宏观上的粗糙度比较容易理解，带来的视觉效果具有很明显的凹凸感，随着观测尺度越来越小，小到比一个像素还小的时候，这个时候粗糙度会带来怎样的视觉效果呢？可以想象出许多光线在这个像素内受粗糙度的影响而反射到各个方向，宏观和微观的光线反射方式如图13所示。</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_12.png" alt="图13 - 宏观和微观的反射方式"></p>
+<h2 id="粗糙度roughness">粗糙度(Roughness)</h2>
+<p>宏观上的粗糙度比较容易理解，带来的视觉效果具有很明显的凹凸感，随着观测尺度越来越小，小到比一个像素还小的时候，这个时候粗糙度会带来怎样的视觉效果呢？可以想象出许多光线在这个像素内受粗糙度的影响而反射到各个方向，宏观和微观的光线反射方式如图13所示。</p>
+<figure>
+<img src="image_12.png" alt="图13 - 宏观和微观的反射方式" />
+<figcaption aria-hidden="true">图13 - 宏观和微观的反射方式</figcaption>
+</figure>
 <p>而随着微观粗糙度的增加，反射的光线会变得越分散，也就会导致反射出去的环境信息更模糊更暗，如图14所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_13.png" alt="图14 - 粗糙度越大，反射的光线就越发散，导致高光信息更模糊更暗。"></p>
+<figure>
+<img src="image_13.png"
+alt="图14 - 粗糙度越大，反射的光线就越发散，导致高光信息更模糊更暗。" />
+<figcaption aria-hidden="true">图14 -
+粗糙度越大，反射的光线就越发散，导致高光信息更模糊更暗。</figcaption>
+</figure>
 <p>假想有一个小而亮的光源，设置一个粗糙度的值，并将衡量它的尺度逐渐减小，得到的高光光斑如图15所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_14.png" alt="图15 - 观测尺度从宏观到微观的高光光斑效果"></p>
+<figure>
+<img src="image_14.png"
+alt="图15 - 观测尺度从宏观到微观的高光光斑效果" />
+<figcaption aria-hidden="true">图15 -
+观测尺度从宏观到微观的高光光斑效果</figcaption>
+</figure>
 <p>粗糙度正是微表面法线分布的一种体现，这也体现了研究微观法线分布的重要性。</p>
-<h2 id="Masking-Shadowing-Interreflecting"><a href="#Masking-Shadowing-Interreflecting" class="headerlink" title="Masking, Shadowing, Interreflecting"></a>Masking, Shadowing, Interreflecting</h2><p>在微观几何中，除了要关注法线分布，还需要考虑到其他效应。微表面的分布形式会产生一些遮挡关系，如图16所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_15.png" alt="图16 - 左侧的黑色虚线箭头表示被一些微观结构遮挡住光线的区域(shadowing)，中间的红色虚线箭头表示被一些微观结构遮挡住视野的区域(masking)，右侧展示了光线在微观结构之间相互反射(interreflecting)的情形。"></p>
+<h2 id="masking-shadowing-interreflecting">Masking, Shadowing,
+Interreflecting</h2>
+<p>在微观几何中，除了要关注法线分布，还需要考虑到其他效应。微表面的分布形式会产生一些遮挡关系，如图16所示：</p>
+<figure>
+<img src="image_15.png"
+alt="图16 - 左侧的黑色虚线箭头表示被一些微观结构遮挡住光线的区域(shadowing)，中间的红色虚线箭头表示被一些微观结构遮挡住视野的区域(masking)，右侧展示了光线在微观结构之间相互反射(interreflecting)的情形。" />
+<figcaption aria-hidden="true">图16 -
+左侧的黑色虚线箭头表示被一些微观结构遮挡住光线的区域(shadowing)，中间的红色虚线箭头表示被一些微观结构遮挡住视野的区域(masking)，右侧展示了光线在微观结构之间相互反射(interreflecting)的情形。</figcaption>
+</figure>
 <p>正常来说，我们对微表面建模时这三点都是需要考虑的，不过由于interreflecting比较复杂，很多BRDF中只计算了shadowing和masking这两部分，尽管这可能使最终的结果变暗。</p>
 <p>如果微观几何的高度和表面法线之间存在相关性，那么shadowing和masking会有效地影响法线分布，例如想象一个表面，其中凸起的部分非常平滑(比如被风化)，而较低的部分仍然非常粗糙，这个时候在斜视角度下，表面的较低部分往往会被遮挡从而导致表面变得更加平滑，如图17所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_16.png" alt="图17 - 顶部表明表面从接近宏观表面法线的角度照射时，粗糙的坑洞会被许多入射光线击中，因此许多光线会散射到不同的方向；而底部表明表面从斜视角度照射时，凸起处阻挡了大部分坑洞，导致坑洞难以被光线击中，因此大多数光线从表面的平滑部分反射，在这种情况下，表面的表现粗糙度强烈依赖于照明角度。"></p>
-<p>对于所有表面类型，随着入射角度$\theta_i$的增加，表面可见的不规则性(Irregularity)会减小，这些效应与菲涅尔效应(以后的分享中会讲)相结合，使表面在观察和照明角度接近90度时呈高度反射状态。</p>
-<h2 id="法线分布函数-Normal-Distribution-Function"><a href="#法线分布函数-Normal-Distribution-Function" class="headerlink" title="法线分布函数(Normal Distribution Function)"></a>法线分布函数(Normal Distribution Function)</h2><p>微表面模型的一个重要属性是微表面法线$\textbf m$的统计分布，称为法线分布函数(Normal Distribution Function, NDF)，用$D(\textbf m)$表示。</p>
-<p>虽然$D(\textbf m)$表示的是法线$\textbf m$的分布比例，但为了能兼容到宏观的BRDF中，需要做一些规定：所有$D(\textbf m)$在宏观表面上的投影面积之和必须是$dA$，也就是说$D(\textbf m)$需要满足：</p>
-<p>$$<br>\int_{\textbf m\in\Theta}D(\textbf m)(\textbf n\cdot\textbf m)d\textbf mdA&#x3D;dA\ \Rightarrow \int_{\textbf m\in\Theta}D(\textbf m)(\textbf n\cdot\textbf m)d\textbf m&#x3D;1<br>$$</p>
-<p>根据这个条件，我们可以将$D(\textbf m)$理解为$\textbf m$对应的微表面的面积与宏观表面面积的比值，如图18所示：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_17.png" alt="图18 - 我们假设某个法线为$\textbf m$的微表面的面积为$dA_m$，将其朝法线$\textbf n$垂直的方向投影得到的$dA=(\textbf n\cdot\textbf m)dA_m$，那么对$D(\textbf m)(\textbf n\cdot\textbf m)$积分得到的是所有微表面在宏观表面上的投影面积的比例，也就是1。"></p>
-<p>同理我们可以推导出：对于任意方向$\textbf v$，微表面和宏观表面在垂直于$\textbf v$的平面上的投影是相等的，即：</p>
-<p>$$<br>\int_{\textbf m\in\Theta}D(\textbf m)(\textbf v\cdot\textbf m)d\textbf m&#x3D;\textbf v\cdot\textbf n<br>$$</p>
+<figure>
+<img src="image_16.png"
+alt="图17 - 顶部表明表面从接近宏观表面法线的角度照射时，粗糙的坑洞会被许多入射光线击中，因此许多光线会散射到不同的方向；而底部表明表面从斜视角度照射时，凸起处阻挡了大部分坑洞，导致坑洞难以被光线击中，因此大多数光线从表面的平滑部分反射，在这种情况下，表面的表现粗糙度强烈依赖于照明角度。" />
+<figcaption aria-hidden="true">图17 -
+顶部表明表面从接近宏观表面法线的角度照射时，粗糙的坑洞会被许多入射光线击中，因此许多光线会散射到不同的方向；而底部表明表面从斜视角度照射时，凸起处阻挡了大部分坑洞，导致坑洞难以被光线击中，因此大多数光线从表面的平滑部分反射，在这种情况下，表面的表现粗糙度强烈依赖于照明角度。</figcaption>
+</figure>
+<p>对于所有表面类型，随着入射角度<span
+class="math inline">\(\theta_i\)</span>的增加，表面可见的不规则性(Irregularity)会减小，这些效应与菲涅尔效应(以后的分享中会讲)相结合，使表面在观察和照明角度接近90度时呈高度反射状态。</p>
+<h2 id="法线分布函数normal-distribution-function">法线分布函数(Normal
+Distribution Function)</h2>
+<p>微表面模型的一个重要属性是微表面法线<span
+class="math inline">\(\textbf
+m\)</span>的统计分布，称为法线分布函数(Normal Distribution Function,
+NDF)，用<span class="math inline">\(D(\textbf m)\)</span>表示。</p>
+<p>虽然<span class="math inline">\(D(\textbf
+m)\)</span>表示的是法线<span class="math inline">\(\textbf
+m\)</span>的分布比例，但为了能兼容到宏观的BRDF中，需要做一些规定：所有<span
+class="math inline">\(D(\textbf
+m)\)</span>在宏观表面上的投影面积之和必须是<span
+class="math inline">\(dA\)</span>，也就是说<span
+class="math inline">\(D(\textbf m)\)</span>需要满足：</p>
+<p><span class="math display">\[
+\int_{\textbf m\in\Theta}D(\textbf m)(\textbf n\cdot\textbf m)d\textbf
+mdA=dA\\ \Rightarrow \int_{\textbf m\in\Theta}D(\textbf m)(\textbf
+n\cdot\textbf m)d\textbf m=1
+\]</span></p>
+<p>根据这个条件，我们可以将<span class="math inline">\(D(\textbf
+m)\)</span>理解为<span class="math inline">\(\textbf
+m\)</span>对应的微表面的面积与宏观表面面积的比值，如图18所示：</p>
+<figure>
+<img src="image_17.png"
+alt="图18 - 我们假设某个法线为\textbf m的微表面的面积为dA_m，将其朝法线\textbf n垂直的方向投影得到的dA=(\textbf n\cdot\textbf m)dA_m，那么对D(\textbf m)(\textbf n\cdot\textbf m)积分得到的是所有微表面在宏观表面上的投影面积的比例，也就是1。" />
+<figcaption aria-hidden="true">图18 - 我们假设某个法线为<span
+class="math inline">\(\textbf m\)</span>的微表面的面积为<span
+class="math inline">\(dA_m\)</span>，将其朝法线<span
+class="math inline">\(\textbf n\)</span>垂直的方向投影得到的<span
+class="math inline">\(dA=(\textbf n\cdot\textbf
+m)dA_m\)</span>，那么对<span class="math inline">\(D(\textbf m)(\textbf
+n\cdot\textbf
+m)\)</span>积分得到的是所有微表面在宏观表面上的投影面积的比例，也就是1。</figcaption>
+</figure>
+<p>同理我们可以推导出：对于任意方向<span class="math inline">\(\textbf
+v\)</span>，微表面和宏观表面在垂直于<span class="math inline">\(\textbf
+v\)</span>的平面上的投影是相等的，即：</p>
+<p><span class="math display">\[
+\int_{\textbf m\in\Theta}D(\textbf m)(\textbf v\cdot\textbf m)d\textbf
+m=\textbf v\cdot\textbf n
+\]</span></p>
 <p>我们可以结合图19来理解：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_18.png" alt="图19 - 对$D(\textbf m)(\textbf v\cdot\textbf m)$积分得到的是微表面区域在垂直于$\textbf v$的平面上的投影比例，也是宏表面在该平面上的投影比例，即$\cos\theta_o$或$\textbf v\cdot\textbf n$，当多个微表面的投影重叠时，背面的负投影会抵消正面的投影。"></p>
+<figure>
+<img src="image_18.png"
+alt="图19 - 对D(\textbf m)(\textbf v\cdot\textbf m)积分得到的是微表面区域在垂直于\textbf v的平面上的投影比例，也是宏表面在该平面上的投影比例，即\cos\theta_o或\textbf v\cdot\textbf n，当多个微表面的投影重叠时，背面的负投影会抵消正面的投影。" />
+<figcaption aria-hidden="true">图19 - 对<span
+class="math inline">\(D(\textbf m)(\textbf v\cdot\textbf
+m)\)</span>积分得到的是微表面区域在垂直于<span
+class="math inline">\(\textbf
+v\)</span>的平面上的投影比例，也是宏表面在该平面上的投影比例，即<span
+class="math inline">\(\cos\theta_o\)</span>或<span
+class="math inline">\(\textbf v\cdot\textbf
+n\)</span>，当多个微表面的投影重叠时，背面的负投影会抵消正面的投影。</figcaption>
+</figure>
 <p>NDF一般以粗糙度作为参数来构建，不同NDF模型中的粗糙度参数的含义一般都不太一样，而且并不那么线性，一般需要通过二次拟合来达到均匀感知的效果。</p>
 <p>NDF根据其形状可以分为各向同性的(Isotropic)和各向异性的(Anisotropic)，各向同性的NDF具有旋转对称性，也就是外观只和极角有关而与方位角无关，大部分的物体表面都是各向同性的，而各向异性的NDF一般具有偏好的某个法线方向，使得我们在不同的方位角位置观察物体呈现出来的颜色不一样。</p>
 <p>各向同性的NDF只需要一个粗糙度参数就能定义，各向异性的NDF则需要切线方向和副切线方向上的两个粗糙度参数定义，具体的NDF会在以后的分享中阐述。</p>
-<h2 id="几何函数-Geometry-Function"><a href="#几何函数-Geometry-Function" class="headerlink" title="几何函数(Geometry Function)"></a>几何函数(Geometry Function)</h2><p>在渲染时我们只关心可见的微表面，即多个重叠微表面中最靠近相机的那部分，为了计算宏观表面上的实际生效面积，我们可以定义一个几何函数$G_1(\textbf m,\textbf v)$(Masking Function)，它表达的是法线为$\textbf m$的微表面的可见部分在视线$\textbf v$上的投影面积占总投影面积的比例，我们将其加入球面积分中，得到的即为宏观表面在垂直于$\textbf v$的平面上的投影面积比例：</p>
-<p>$$<br>\int_{\textbf m\in\Theta}G_1(\textbf m,\textbf v)D(\textbf m)(\textbf v\cdot\textbf m)^+d\textbf m&#x3D;\textbf v\cdot\textbf n<br>$$</p>
-<p>由于微表面的背面我们是看不到的，因此$\textbf v\cdot\textbf m$需要将小于零的部分裁减掉，在式子中表示为$(\textbf v\cdot\textbf m)^+$，$G_1(\textbf m,\textbf v)D(\textbf m)$这一部分我们将其称为可见法线分布(distribution of visible normals)，可以结合图20理解：</p>
-<p><img src="/2023/07/09/pbr-fundamentals/image_19.png" alt="图20 - 只积分可见区域的微表面面积(图中红线部分)得到的就是垂直于$\textbf v$的平面上的投影，此时背面都将被忽略。"></p>
-<p>同理我们可以推导出$G_1(\textbf m,\textbf l)$(Shadowing Function)，它表达的是法线为$\textbf m$的微表面的可见部分在视线$\textbf v$上的投影面积占总投影面积的比例：</p>
-<p>$$<br>\int_{\textbf m\in\Theta}G_1(\textbf m,\textbf l)D(\textbf m)(\textbf l\cdot\textbf m)^+d\textbf m&#x3D;\textbf l\cdot\textbf n<br>$$</p>
-<p>实际上我们需要同时考虑masking和shadowing的情况，我们用$G_2$函数表示它，假设masking和shadowing是相互独立的，那么我们可以简单地通过累乘来计算出$G_2$：</p>
-<p>$$<br>G_2(\textbf m,\textbf l,\textbf v)&#x3D;G_1(\textbf m,\textbf l)G_1(\textbf m,\textbf v)<br>$$</p>
-<p>但实际情况往往是masking和shadowing存在重叠部分，此时$G_2$表达的就是同时考虑masking和shadowing的可见比例。</p>
-<p>由于masking和shadowing的可见法线分布的积分各自不可能超过$\textbf n\cdot\textbf l$和$\textbf n\cdot\textbf v$，因此有：</p>
-<p>$$<br>\int_{\textbf m\in\Omega}G_2(\textbf m,\textbf l,\textbf v)D(\textbf m)(\textbf m\cdot\textbf l)^+(\textbf m\cdot\textbf v)^+d\textbf m\leq|\textbf n\cdot\textbf l||\textbf n\cdot\textbf v|<br>$$</p>
-<h2 id="基于微表面的BRDF"><a href="#基于微表面的BRDF" class="headerlink" title="基于微表面的BRDF"></a>基于微表面的BRDF</h2><p>最后我们基于微观几何定义一个微表面的BRDF：$f_\mu(\textbf m,\textbf l,\textbf v)$，这个BRDF需要满足：</p>
-<p>$$<br>f_r(\textbf l,\textbf v)&#x3D;\int_{\textbf m\in\Omega}f_\mu(\textbf m,\textbf l,\textbf v)d\textbf m<br>$$</p>
-<p>这个时候我们再考虑可见法线分布的比例进一步过滤$\textbf m$，根据给定的NDF $D(\textbf m)$和$G_2(\textbf m,\textbf l,\textbf v)$，推导得到的宏表面BRDF为：</p>
-<p>$$<br>f_r(\textbf l,\textbf v)&#x3D;\int_{\textbf m\in\Omega}f_\mu(\textbf m,\textbf l,\textbf v)G_2(\textbf m,\textbf l,\textbf v)D(\textbf m)\frac{(\textbf m\cdot\textbf l)^+}{|\textbf n\cdot\textbf l|}\frac{(\textbf m\cdot\textbf v)^+}{|\textbf n\cdot\textbf v|}d\textbf m<br>$$</p>
-<p>之前提到过可见法线分布的最大值为$|\textbf n\cdot\textbf l||\textbf n\cdot\textbf v|$，因此我们这里计算比例需要除以这个值。这个式子就是基于微观几何推导出的BRDF公式了。</p>
-<h1 id="总结-Summary"><a href="#总结-Summary" class="headerlink" title="总结(Summary)"></a>总结(Summary)</h1><p>通过了解辐射度量学和微分立体角的概念，我们了解了宏观概念下的渲染方程，并引出了BRDF的概念，这样我们就可以将各种光照模型的焦点转移到各自的BRDF中，然后我们又通过微观几何的概念建立了微表面理论，推导出了基于微表面理论的BRDF，这个时候又将焦点转移到了NDF和几何函数上面，渲染方程的伟大之处便在于此，我们将整个光照模型抽象成了多个子模型，让我们能专注在建立子模型来达到自己想要的渲染效果。</p>
+<h2 id="几何函数geometry-function">几何函数(Geometry Function)</h2>
+<p>在渲染时我们只关心可见的微表面，即多个重叠微表面中最靠近相机的那部分，为了计算宏观表面上的实际生效面积，我们可以定义一个几何函数<span
+class="math inline">\(G_1(\textbf m,\textbf v)\)</span>(Masking
+Function)，它表达的是法线为<span class="math inline">\(\textbf
+m\)</span>的微表面的可见部分在视线<span class="math inline">\(\textbf
+v\)</span>上的投影面积占总投影面积的比例，我们将其加入球面积分中，得到的即为宏观表面在垂直于<span
+class="math inline">\(\textbf v\)</span>的平面上的投影面积比例：</p>
+<p><span class="math display">\[
+\int_{\textbf m\in\Theta}G_1(\textbf m,\textbf v)D(\textbf m)(\textbf
+v\cdot\textbf m)^+d\textbf m=\textbf v\cdot\textbf n
+\]</span></p>
+<p>由于微表面的背面我们是看不到的，因此<span
+class="math inline">\(\textbf v\cdot\textbf
+m\)</span>需要将小于零的部分裁减掉，在式子中表示为<span
+class="math inline">\((\textbf v\cdot\textbf m)^+\)</span>，<span
+class="math inline">\(G_1(\textbf m,\textbf v)D(\textbf
+m)\)</span>这一部分我们将其称为可见法线分布(distribution of visible
+normals)，可以结合图20理解：</p>
+<figure>
+<img src="image_19.png"
+alt="图20 - 只积分可见区域的微表面面积(图中红线部分)得到的就是垂直于\textbf v的平面上的投影，此时背面都将被忽略。" />
+<figcaption aria-hidden="true">图20 -
+只积分可见区域的微表面面积(图中红线部分)得到的就是垂直于<span
+class="math inline">\(\textbf
+v\)</span>的平面上的投影，此时背面都将被忽略。</figcaption>
+</figure>
+<p>同理我们可以推导出<span class="math inline">\(G_1(\textbf m,\textbf
+l)\)</span>(Shadowing Function)，它表达的是法线为<span
+class="math inline">\(\textbf m\)</span>的微表面的可见部分在视线<span
+class="math inline">\(\textbf
+v\)</span>上的投影面积占总投影面积的比例：</p>
+<p><span class="math display">\[
+\int_{\textbf m\in\Theta}G_1(\textbf m,\textbf l)D(\textbf m)(\textbf
+l\cdot\textbf m)^+d\textbf m=\textbf l\cdot\textbf n
+\]</span></p>
+<p>实际上我们需要同时考虑masking和shadowing的情况，我们用<span
+class="math inline">\(G_2\)</span>函数表示它，假设masking和shadowing是相互独立的，那么我们可以简单地通过累乘来计算出<span
+class="math inline">\(G_2\)</span>：</p>
+<p><span class="math display">\[
+G_2(\textbf m,\textbf l,\textbf v)=G_1(\textbf m,\textbf l)G_1(\textbf
+m,\textbf v)
+\]</span></p>
+<p>但实际情况往往是masking和shadowing存在重叠部分，此时<span
+class="math inline">\(G_2\)</span>表达的就是同时考虑masking和shadowing的可见比例。</p>
+<p>由于masking和shadowing的可见法线分布的积分各自不可能超过<span
+class="math inline">\(\textbf n\cdot\textbf l\)</span>和<span
+class="math inline">\(\textbf n\cdot\textbf v\)</span>，因此有：</p>
+<p><span class="math display">\[
+\int_{\textbf m\in\Omega}G_2(\textbf m,\textbf l,\textbf v)D(\textbf
+m)(\textbf m\cdot\textbf l)^+(\textbf m\cdot\textbf v)^+d\textbf
+m\leq|\textbf n\cdot\textbf l||\textbf n\cdot\textbf v|
+\]</span></p>
+<h2 id="基于微表面的brdf">基于微表面的BRDF</h2>
+<p>最后我们基于微观几何定义一个微表面的BRDF：<span
+class="math inline">\(f_\mu(\textbf m,\textbf l,\textbf
+v)\)</span>，这个BRDF需要满足：</p>
+<p><span class="math display">\[
+f_r(\textbf l,\textbf v)=\int_{\textbf m\in\Omega}f_\mu(\textbf
+m,\textbf l,\textbf v)d\textbf m
+\]</span></p>
+<p>这个时候我们再考虑可见法线分布的比例进一步过滤<span
+class="math inline">\(\textbf m\)</span>，根据给定的NDF <span
+class="math inline">\(D(\textbf m)\)</span>和<span
+class="math inline">\(G_2(\textbf m,\textbf l,\textbf
+v)\)</span>，推导得到的宏表面BRDF为：</p>
+<p><span class="math display">\[
+f_r(\textbf l,\textbf v)=\int_{\textbf m\in\Omega}f_\mu(\textbf
+m,\textbf l,\textbf v)G_2(\textbf m,\textbf l,\textbf v)D(\textbf
+m)\frac{(\textbf m\cdot\textbf l)^+}{|\textbf n\cdot\textbf
+l|}\frac{(\textbf m\cdot\textbf v)^+}{|\textbf n\cdot\textbf v|}d\textbf
+m
+\]</span></p>
+<p>之前提到过可见法线分布的最大值为<span class="math inline">\(|\textbf
+n\cdot\textbf l||\textbf n\cdot\textbf
+v|\)</span>，因此我们这里计算比例需要除以这个值。这个式子就是基于微观几何推导出的BRDF公式了。</p>
+<h1 id="总结summary">总结(Summary)</h1>
+<p>通过了解辐射度量学和微分立体角的概念，我们了解了宏观概念下的渲染方程，并引出了BRDF的概念，这样我们就可以将各种光照模型的焦点转移到各自的BRDF中，然后我们又通过微观几何的概念建立了微表面理论，推导出了基于微表面理论的BRDF，这个时候又将焦点转移到了NDF和几何函数上面，渲染方程的伟大之处便在于此，我们将整个光照模型抽象成了多个子模型，让我们能专注在建立子模型来达到自己想要的渲染效果。</p>
 
     </div>
 
