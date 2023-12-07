@@ -56,8 +56,8 @@
 <meta property="og:image" content="https://wanmaple.github.io/2023/12/08/red-black-tree/image_27.png">
 <meta property="og:image" content="https://wanmaple.github.io/2023/12/08/red-black-tree/image_28.png">
 <meta property="og:image" content="https://wanmaple.github.io/2023/12/08/red-black-tree/image_29.png">
-<meta property="article:published_time" content="2023-12-07T17:01:13.000Z">
-<meta property="article:modified_time" content="2023-12-07T17:01:19.652Z">
+<meta property="article:published_time" content="2023-12-07T17:13:18.000Z">
+<meta property="article:modified_time" content="2023-12-07T17:13:24.576Z">
 <meta property="article:author" content="Winder">
 <meta property="article:tag" content="Algorithms">
 <meta name="twitter:card" content="summary">
@@ -212,7 +212,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-12-08 01:01:13 / Modified: 01:01:19" itemprop="dateCreated datePublished" datetime="2023-12-08T01:01:13+08:00">2023-12-08</time>
+      <time title="Created: 2023-12-08 01:13:18 / Modified: 01:13:24" itemprop="dateCreated datePublished" datetime="2023-12-08T01:13:18+08:00">2023-12-08</time>
     </span>
 
   
@@ -517,7 +517,9 @@ class="math inline">\(g\)</span>的颜色。</figcaption>
 <p>情况1：删除的是红色的叶子节点，这是最简单的情况，直接删除即可，不会破坏任何红黑树的条件。</p>
 <p>情况2：删除的是黑色的叶子节点，嗯，这明显是一个很复杂的情况。</p>
 <p>情况3：删除的是内部节点，有办法将它变成1,2两种情况吗？</p>
-<p>现讨论一下情况3，如果删除的是内部节点，这意味着删除的节点至少有一个孩子节点，这也意味着存在一个前驱节点或后继节点且它们最多只有一个孩子节点，如果前驱节点或后继节点是叶子节点，那么就将前驱节点或后继节点的数据和目标节点交换，如果前驱结点或后继节点有孩子节点，那么孩子节点一定是叶子节点，那么就将该叶子节点和目标节点交换，然后改为删除交换的叶子节点，这样就变成了1,2两种情况了。</p>
+<p>现讨论一下情况3，如果删除的是内部节点，这意味着删除的节点至少有一个孩子节点，这也意味着存在一个前驱节点或后继节点。</p>
+<p>如果前驱节点或后继节点是叶子节点，那么就将前驱节点或后继节点的数据和目标节点交换。</p>
+<p>如果前驱结点或后继节点有孩子节点，那孩子节点一定是叶子节点，此时先将前驱节点或后继节点的数据和目标节点交换，然后再与叶子节点的数据交换，然后改为删除叶子节点，这样就变成了1,2两种情况了。</p>
 <p>假设删除的节点为<span
 class="math inline">\(x\)</span>，归纳一下就是：</p>
 <p>如果<span
