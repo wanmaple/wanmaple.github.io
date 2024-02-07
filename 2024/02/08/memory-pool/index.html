@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wanmaple.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文讲解了内存池的设计思路以及常用的内存分配器算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存池">
+<meta property="og:url" content="https://wanmaple.github.io/2024/02/08/memory-pool/index.html">
+<meta property="og:site_name" content="Winder&#39;s Blog">
+<meta property="og:description" content="本文讲解了内存池的设计思路以及常用的内存分配器算法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_0.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_1.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_2.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_3.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_4.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_5.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_6.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_7.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_8.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_9.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_10.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_11.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_12.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_13.png">
+<meta property="article:published_time" content="2024-02-07T16:27:42.000Z">
+<meta property="article:modified_time" content="2024-02-07T16:27:50.922Z">
+<meta property="article:author" content="Winder">
+<meta property="article:tag" content="Algorithms">
+<meta property="article:tag" content="Memory">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanmaple.github.io/2024/02/08/memory-pool/image_0.png">
+
+
+<link rel="canonical" href="https://wanmaple.github.io/2024/02/08/memory-pool/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://wanmaple.github.io/2024/02/08/memory-pool/","path":"2024/02/08/memory-pool/","title":"内存池"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>内存池 | Winder's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Winder's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Game Programmer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">设计理念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%88%86%E9%85%8D"><span class="nav-number">2.1.</span> <span class="nav-text">对齐分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#os%E7%BA%A7%E5%88%86%E9%85%8D%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">OS级分配函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E9%85%8D%E5%99%A8%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">分配器算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-allocator"><span class="nav-number">3.1.</span> <span class="nav-text">Linear Allocator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stack-allocator"><span class="nav-number">3.2.</span> <span class="nav-text">Stack Allocator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#freelist-allocator"><span class="nav-number">3.3.</span> <span class="nav-text">FreeList Allocator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pool-allocator"><span class="nav-number">3.4.</span> <span class="nav-text">Pool Allocator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tlsf-allocator"><span class="nav-number">3.5.</span> <span class="nav-text">TLSF Allocator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tlsl%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.5.1.</span> <span class="nav-text">TLSL的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tlsl%E7%9A%84%E5%88%86%E9%85%8D"><span class="nav-number">3.5.2.</span> <span class="nav-text">TLSL的分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tlsl%E7%9A%84%E9%87%8A%E6%94%BE"><span class="nav-number">3.5.3.</span> <span class="nav-text">TLSL的释放</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Winder</p>
+  <div class="site-description" itemprop="description">随便写写。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wanmaple.github.io/2024/02/08/memory-pool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Winder">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Winder's Blog">
+      <meta itemprop="description" content="随便写写。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="内存池 | Winder's Blog">
+      <meta itemprop="description" content="本文讲解了内存池的设计思路以及常用的内存分配器算法。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内存池
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-02-08 00:27:42 / Modified: 00:27:50" itemprop="dateCreated datePublished" datetime="2024-02-08T00:27:42+08:00">2024-02-08</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文讲解了内存池的设计思路以及常用的内存分配器算法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言">前言</h1>
+<p>虽然系统内置的内存分配器(Memory
+Allocator)的性能优秀，但是随着应用的长时间执行，内存碎片化的现象也变得严重，从而影响内存效率。通过在特定场景下自定义内存分配器，可以带来不少好处：</p>
+<ol type="1">
+<li>增加内存的重利用，减少内存碎片。</li>
+<li>对内存的分配与释放可以进行统计，常用于调试与寻找泄露问题等。</li>
+<li>特定情况下可以提高内存分配或释放的性能。</li>
+</ol>
+<p>然而一个万能的内存分配器是难以实现的，一般情况下我们会希望：</p>
+<ol type="1">
+<li>可以分配任意大小的内存块。</li>
+<li>可以记录内存块的相关信息。</li>
+<li>可以按照任意顺序申请或释放内存。</li>
+<li>可以同时处理来自不同线程的请求。</li>
+<li>可以拥有良好的内存效率，增加Cache Line的利用率。</li>
+</ol>
+<p>要想拥有以上所有的功能，这样的分配器必然是有很大代价的，因此更常见的做法是在不同应用场景下使用不同的分配器，各自发挥各自的长处，所以要做自定义的内存管理也是非常费劲的，而且内存管理的代码设计也是一个挑战，本文不涉及内存管理的代码设计。</p>
+<p>内存分配分为静态分配和动态分配，静态分配是在编译期间就已经分配好并且永远不会变的，比如代码常量的分配就是静态分配；动态分配则是在运行时才会执行，根据情况不同还会需要释放的操作。</p>
+<p>本文重点阐述常用的运行时动态分配器算法，不涉及线程安全，会分别描述分配(Allocate)和释放(Deallocate)的相应做法，不过在此之前要先了解一下分配器的设计理念。</p>
+<h1 id="设计理念">设计理念</h1>
+<h2 id="对齐分配">对齐分配</h2>
+<p>由于系统在读写内存时，需要先把内存按块读进缓存，而内存的读取则是按照对齐量(Alignment)的理念进行的，举个例子，假设内存按照4个字节分块，目标数据大小为4个字节，那么如果数据的首地址不是按照4字节对齐的话，系统会需要读进两个内存块才能解析数据，相反如果数据的首地址按照4字节对齐的话，系统就只需要读进一个内存块，如图1所示：</p>
+<figure>
+<img src="image_0.png" alt="图1 - 非对齐情况下和对齐情况下的读取逻辑" />
+<figcaption aria-hidden="true">图1 -
+非对齐情况下和对齐情况下的读取逻辑</figcaption>
+</figure>
+<p>也就是说，在设计分配器时，需要尽可能使得数据首地址对齐内存，这点很重要，读取的内存块越少，那么Cache
+Line的利用率也会随之变高。</p>
+<p>而计算某个地址的最近的对齐地址也分成两个方向，可以向前对齐也可以向后对齐，由于对齐量都是2的幂，因此也有非常便捷的算法，可以结合二进制位理解，假设<span
+class="math inline">\(\textrm{alignment =
+}2^k\)</span>，向前对齐很容易想到，只需要将最低<span
+class="math inline">\(k\)</span>位清零即可，得到的就是最靠近的前置对齐地址，而如果要向后对齐只需要先加上<span
+class="math inline">\(2^k-1\)</span>，然后再将最低<span
+class="math inline">\(k\)</span>位清零，之所以要减一是为了避免目标地址已经是对齐的情况下得到了下一个对齐的地址，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FORCEINLINE <span class="type">void</span> *<span class="title">AlignForward</span><span class="params">(<span class="type">void</span> *addr, u8 alignment)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="type">void</span> *)((<span class="built_in">reinterpret_cast</span>&lt;uptr&gt;(addr) + <span class="built_in">static_cast</span>&lt;uptr&gt;(alignment - <span class="number">1</span>)) &amp; <span class="built_in">static_cast</span>&lt;uptr&gt;(~(alignment - <span class="number">1</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">FORCEINLINE <span class="type">void</span> *<span class="title">AlignBackward</span><span class="params">(<span class="type">void</span> *addr, u8 alignment)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="type">void</span> *)(<span class="built_in">reinterpret_cast</span>&lt;uptr&gt;(addr) &amp; <span class="built_in">static_cast</span>&lt;uptr&gt;(~(alignment - <span class="number">1</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，如果分配器分配的内存需要存储自组织数据的话，需要注意每部分的首地址最好是对齐的，图2是一个带有Header和Footer的内存块分布的示例：</p>
+<figure>
+<img src="image_1.png"
+alt="图2 - 合格的内存块分布，Header表示额外表头信息，Payload表示实际数据，Footer表示额外尾端信息，由于对齐量可能导致Header和Payload后面出现间隙。" />
+<figcaption aria-hidden="true">图2 -
+合格的内存块分布，Header表示额外表头信息，Payload表示实际数据，Footer表示额外尾端信息，由于对齐量可能导致Header和Payload后面出现间隙。</figcaption>
+</figure>
+<p>脑海中有了这些概念之后，接下来就可以来了解系统级别的分配函数了，因为分配器最终都会调用到这些分配函数来实际分配内存。</p>
+<h2 id="os级分配函数">OS级分配函数</h2>
+<p>要分配内存，必然要经过系统提供的分配函数，重点包括malloc、calloc、realloc，它们都可以用于内存分配，但是有不同的适用场景，但是不论是哪个分配函数，得到的地址一定是已经内存对齐了的，比如32位机器下一定是8字节对齐，64位机器下一定是16字节对齐，用这些函数申请的内存都需要通过free函数释放。</p>
+<p>另外如果你希望返回一个自定义对齐量的地址的话，可以使用_aligned_malloc、_aligned_calloc、_aligned_realloc，它们需要额外传入一个对齐量作为参数，而且释放也需要使用_aligned_free函数。</p>
+<ul>
+<li><p>malloc</p>
+<p>malloc函数分配的内存是未定义的，也就是说系统只是找了一块可用内存，什么都不做直接返回给你，因此分配速度非常快，一般创建一个需要初始化的对象时，使用malloc比较好，然后再用replacement
+new的语法直接构造即可，示例代码如下：</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *mem = ::<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(Student));</span><br><span class="line"><span class="keyword">new</span>(mem) <span class="built_in">Student</span>(<span class="string">&quot;Winder&quot;</span>, <span class="number">32</span>);</span><br></pre></td></tr></table></figure></p></li>
+<li><p>calloc</p>
+<p>calloc函数分配的内存会全部清零，因此要比malloc慢一些，实际上这个函数并不那么常用，因为初始化对象通常需要走构造器初始化，不过calloc也适用于分配那些初始数据就是全零的对象，在特定情境下有一定作用。</p></li>
+<li><p>realloc</p>
+<p>realloc函数通过传入一个地址和分配大小，系统会尝试在目标地址上重新分配，根据目标大小和目标地址已分配内存的大小关系，会分为两种情况：</p>
+<ol type="1">
+<li>目标大小比已分配大小更小或者相等，则不做任何事，直接返回目标地址。</li>
+<li>目标大小比已分配大小更大，系统会尝试在超出的部分给你分配，如果分配成功则会直接返回目标地址，且超出部分的内存是未定义的；而如果超出部分无法分配，那么系统会分配一块新的内存，将旧地址的数据复制到新地址中并释放旧地址，超出部分的内存仍然是未定义的。</li>
+</ol>
+<p>realloc在少部分情景下有用，相比另外两个分配函数realloc有一定开销，使用前需要斟酌一下。</p></li>
+</ul>
+<p>因此大部分情况下，malloc是我们申请内存的主要函数，当然根据实际应用情景选择另外两个分配函数可能会有更好的效果。</p>
+<h1 id="分配器算法">分配器算法</h1>
+<h2 id="linear-allocator">Linear Allocator</h2>
+<p>Linear
+Allocator是速度最快的一种分配器，原理也非常简单，预分配一大块内存并记录一个头部指针，一个当前指针指向头部，然后每实例化一个对象，就将当前指针返回，并将当前指针根据对象大小位移到下一个合法地址(注意对齐)，且对象不会释放，当所有对象都用不到时，直接释放整个分配器申请的内存(通过头部指针)，如图3所示：</p>
+<figure>
+<img src="image_2.png"
+alt="图3 - 绿色部分表示实际数据，黄色部分表示对齐偏移，每申请一个对象则会将current移到下个有效位置。" />
+<figcaption aria-hidden="true">图3 -
+绿色部分表示实际数据，黄色部分表示对齐偏移，每申请一个对象则会将current移到下个有效位置。</figcaption>
+</figure>
+<p>如果对象的分配大小即将超过预分配的内存大小，则无法继续分配。</p>
+<p>Linear Allocator具有以下优点：</p>
+<ol type="1">
+<li>实际分配内存的次数只有一次，而每次实例化对象只需要做一次指针偏移。</li>
+<li>只需要一次实际释放内存，即可将所有对象释放。</li>
+<li>内存分配连续，如果频繁读写这些数据，缓存利用率很高。</li>
+</ol>
+<p>Linear Allocator具有以下缺点：</p>
+<ol type="1">
+<li>预分配大小难以控制，太小会导致超出的对象无法分配，太大则非常占用内存，且数据量的预估是很难的。</li>
+</ol>
+<p>根据Linear
+Allocator的特点，很容易想到它适用于那些长时间常驻的且易估计大小的数据，比如配置表、游戏全局环境数据等等，一般这类数据只需要在重启游戏时释放一次即可(甚至可以不释放)。</p>
+<p>虽然Linear
+Allocator的预分配大小难以估计，但是也有一种改良方式，通过牺牲些许性能维护一张单链表，链表的每个节点指向一块内存，并记录链表的头尾节点，当无法再分配时，就额外再申请一块新的内存并扩展链表节点指向新的内存块，每次申请新的数据只要根据链表的尾部指向的内存进行分配即可，而释放的时候只需要通过链表头部遍历一遍链表，挨个释放，如图4所示：</p>
+<figure>
+<img src="image_3.png" alt="图4 - 改良后的Linear Allocator" />
+<figcaption aria-hidden="true">图4 - 改良后的Linear
+Allocator</figcaption>
+</figure>
+<p>这种方式很好地解决了不好估计预分配大小的问题，且分配速度仍然很快，但是也存在一个风险，从上图可以看出来，中间那个内存块有很大一块没有被利用，原因是那时候分配的数据(底下内存块的左边绿色部分)太大导致直接申请了一块新的，如果出现这种情况多次的话会导致内存利用率较低，也就是会浪费内存，这种碎片称为内部碎片，当然也可以通过扩容解决这个问题，实际情况需要自己权衡。</p>
+<h2 id="stack-allocator">Stack Allocator</h2>
+<p>Stack Allocator和Linear
+Allocator有些相似，但是支持单个对象释放，根据名字也可以看出它是堆栈，是一种后进先出的数据结构，来看下它的结构是怎样的。</p>
+<p>首先也是需要预分配一大块内存，并记录一个头部指针和一个当前指针(和Linear
+Allocator一样)，申请对象时返回当前指针，在偏移数据量部分处记录一个尾部信息，用于指向当前指针，然后再将当前指针指向下一个合法位置，如图5所示：</p>
+<figure>
+<img src="image_4.png" alt="图5 - Stack Allocator的分配过程" />
+<figcaption aria-hidden="true">图5 - Stack
+Allocator的分配过程</figcaption>
+</figure>
+<p>释放逻辑也非常简单，只要通过当前指针读取到上一条数据的Footer信息，并将Current指向Footer记录的地址即可，如图6所示：</p>
+<figure>
+<img src="image_5.png" alt="图6 - Stack Allocator的释放过程" />
+<figcaption aria-hidden="true">图6 - Stack
+Allocator的释放过程</figcaption>
+</figure>
+<p>根据算法，按理说数据的分配和释放是需要严格遵守后分配先释放的原则，这也是常规的用法，不过先来看下优缺点：</p>
+<p>Stack Allocator具有以下优点：</p>
+<ol type="1">
+<li>分配较为快速，需要额外写一个Footer信息，Current需要偏移两次，第一次找到Footer地址，第二次找到合法地址。</li>
+<li>释放较为快速，Current也需要偏移两次，第一次找到Footer地址，第二次找到Footer指向的地址。</li>
+<li>由于支持单个对象释放，因此预分配的内存更不容易超出范围。</li>
+</ol>
+<p>Stack ALlocator具有以下缺点：</p>
+<ol type="1">
+<li>和Linear Allocator一样，预分配大小难以控制。</li>
+<li>对象的分配和释放需要遵守后进先出。</li>
+</ol>
+<p>关于Stack Allocator的缺点1，也可以使用Linear
+Allocator的优化方式，但是由于它支持释放，因此用realloc进行扩容也是一种可选方案。而关于缺点2，在某种特定情形下可以规避，只要确保在同一个作用域的分配对象在出作用域的时候释放掉就没有问题，如图7所示：</p>
+<figure>
+<img src="image_6.png" alt="图7 - 在分配的同一个作用域尾部释放" />
+<figcaption aria-hidden="true">图7 -
+在分配的同一个作用域尾部释放</figcaption>
+</figure>
+<p>没错，那就是临时变量，利用调用堆栈同样也是一种堆栈的性质，这种情形就非常适合Stack
+Allocator。</p>
+<h2 id="freelist-allocator">FreeList Allocator</h2>
+<p>FreeList
+Allocator支持任意大小、任意顺序的分配和释放，每个分配过的内存块可以得到复用，但是内存连续性不能得到保证。</p>
+<p>先来看下FreeList Allocator的结构，如图8所示：</p>
+<figure>
+<img src="image_7.png" alt="图8 - FreeList Allocator的结构" />
+<figcaption aria-hidden="true">图8 - FreeList
+Allocator的结构</figcaption>
+</figure>
+<p>当申请分配某个大小的内存时，会优先检查空闲链表内的节点，如果存在合适的节点，则会返回该空闲节点，否则就会分配一个新的内存块并插入主链表尾部，其中需要有个头部信息记录当前内存块的大小，而找到所谓的合适节点一般有两种策略：</p>
+<ul>
+<li>First-Fit：只要空闲内存块大小满足分配条件，就直接拿来用，不论空闲内存块有多大。</li>
+<li>Best-Fit：找到大小最合适的空闲内存块，也就是比分配大小大的空闲内存块中最小的那个。</li>
+</ul>
+<p>可以看出，这两种策略的最坏情况都是遍历整条链表，甚至糟糕的是没有一块是满足条件的，随着空闲链表逐渐增大，这种分配方式显然是有性能问题的，如果对象是一次性分配非常多个，然后再全部释放，这会导致空闲链表特别长，那么查询逻辑耗时也会非常大。</p>
+<p>在查找过程中记录上一个查询到的空闲内存块地址，而如果找到了一块合适的空闲内存块，就将上一个空闲内存块的地址指向当前空闲内存块的下一个空闲内存块地址，这也就是简单的单链表逻辑。</p>
+<p>释放逻辑就简单很多，将当前内存块变成空闲链表的头部，并指向原本空闲链表的头部。</p>
+<p>FreeList Allocator具有以下优点：</p>
+<ol type="1">
+<li>支持任意顺序任意大小的内存分配与释放。</li>
+<li>释放内存的性能较好。</li>
+</ol>
+<p>FreeList Allocator具有以下缺点：</p>
+<ol type="1">
+<li>随着空闲链表逐渐变大，分配性能也会变得更糟糕。</li>
+<li>内存不连续，缓存利用率低。</li>
+</ol>
+<p>如果要改善分配性能，就得牺牲一部分释放性能，比如First-Fit就将空闲链表改用为最大堆，Best-Fit就将空闲链表改用为二叉搜索树，不论是哪种优化方式，在分配和释放时，都需要对数级别的开销(比如分配时，最大堆需要删除堆顶，二叉搜索树需要查找和删除)。</p>
+<h2 id="pool-allocator">Pool Allocator</h2>
+<p>当分配大小变化时，FreeList
+Allocator的缺点就暴露无疑，但是换一步想，如果分配大小是固定的，或者说不超过某个值，这时候FreeList
+Allocator的算法就能得到很大的应用，缺点1不再存在(按照First-Fit的逻辑)，固定分配大小的FreeList
+Allocator称为Pool Allocator，但是缺点2是否可以优化呢？</p>
+<p>结合Linear Allocator的优化方案，Pool
+Allocator的缺点2也可以优化，思路是利用两级链表，如图9所示：</p>
+<figure>
+<img src="image_8.png" alt="图9 - 两级链表优化后的Pool Allocator。" />
+<figcaption aria-hidden="true">图9 - 两级链表优化后的Pool
+Allocator。</figcaption>
+</figure>
+<p>根据图中所示，一级链表(橙线)的节点对应一个预分配好的更大的内存块(固定大小的倍数)，一级链表中的每个节点中包含对应块的第一个空闲地址(红线，也是二级链表的头部)，也包含下一个拥有空闲地址的一级链表节点指针(蓝线)，而每个固定大小的小块都有个头部信息用于指向下一个空闲的小块地址，红线之所以看起来有点乱，是因为释放时是直接将小块作为二级链表的表头，而释放顺序是不确定的，同理蓝线和橙线也大概率是乱的(每次更新都是插入链表头部)，另外二级链表的表头除了存储下一个空闲地址以外还需要记录所处大块对应的一级链表节点，不然释放的时候无法找到对应的二级链表表头。</p>
+<p>这样的话，一方面每个大内存块是内存连续的，另一方面每次分配和释放逻辑也都是常数级别的开销，这是非常不错的。</p>
+<p>这个算法在每次分配一个新的大块时，需要生成整条二级链表，因为每个小块是默认空闲的，所以每次大块的分配的效率和段数(每个大块有多少个小块)相关。</p>
+<p>优化后的Pool Allocator拥有以下优点：</p>
+<ol type="1">
+<li>支持任意顺序的内存分配与释放。</li>
+<li>分配与释放性能较好。</li>
+</ol>
+<p>优化后的Pool Allocator拥有以下缺点：</p>
+<ol type="1">
+<li>不支持任意大小的内存分配。</li>
+<li>预定义固定大小太大的话，分配太小的对象会有较大的内部碎片。</li>
+</ol>
+<p>即使仍然存在缺点，这种分配器却还是有不少用武之地的，我们平时的业务逻辑中，一般不会像资源对象那么大，那么设置一个合适的固定大小来分配这些逻辑对象也是非常不错的。</p>
+<h2 id="tlsf-allocator">TLSF Allocator</h2>
+<p>TLSF全称Two-Level Segregated
+Fit，和名字一样，使用了两级链表来管理一大块内存，TLSF结构主要由三部分构成：</p>
+<ul>
+<li>一级位图：TLSF会定义一个最小块大小的位数<span
+class="math inline">\(min\_shift\)</span>(以<span
+class="math inline">\(2\)</span>为底)和一个最大块大小的位数<span
+class="math inline">\(max\_shift\)</span>(以<span
+class="math inline">\(2\)</span>为底)，一级位图的第<span
+class="math inline">\(i\)</span>位用于表示大小在<span
+class="math inline">\([2^{i+min\_shift-1},2^{i+min\_shift}\)</span>)区间的内存块覆盖的二级链表Mask，一级位图之后统称<span
+class="math inline">\(FL\_Bitmap\)</span>。</li>
+<li>二级位图：TLSF会定义一个二级划分量<span
+class="math inline">\(sl\_bits\)</span>，目的是为了将当前大小范围再次划分成<span
+class="math inline">\(sl\_bits\)</span>份，要保证划分的区域内存对齐，二级位图的第<span
+class="math inline">\(j\)</span>位用于表示大小在<span
+class="math inline">\(\left[2^{i+min\_shift-i}+\cfrac{2^{i+min\_shift-i}}{sl\_bits}\cdot(j-1),2^{i+min\_shift-i}+\cfrac{2^{i+min\_shift-i}}{sl\_bits}\cdot
+j\right)\)</span>区间的内存块，二级位图之后会用<span
+class="math inline">\(SL\_Bitmap\)</span>或<span
+class="math inline">\(FL\_Bitmap[i]\)</span>表示。</li>
+<li>物理块(Physical
+Block)：一开始分配好的大块内存在不断分配的期间，它会变成许多不同地址上的物理块，而二级位图会指向对应区间范围的空闲物理块的双链表，每个物理块还会记录一些额外信息，这个稍后再讲。</li>
+</ul>
+<p>看数学公式可能有点头晕，说简单点就是一级链表按照<span
+class="math inline">\(2\)</span>的幂划分区域，二级链表再次将区域等比划分成<span
+class="math inline">\(sl\_bits\)</span>份，如图10所示：</p>
+<figure>
+<img src="image_9.png"
+alt="图10 - TLSF结构，红线表示空闲链表，蓝线表示邻接链表。" />
+<figcaption aria-hidden="true">图10 -
+TLSF结构，红线表示空闲链表，蓝线表示邻接链表。</figcaption>
+</figure>
+<p>作图本领不行，凑合看看，根据图可以看出二级位图只负责记录对应大小的空闲块链表的头部(和之前讲的的多级链表优化类似)，<span
+class="math inline">\(FL\_Bitmap\)</span>和所有的<span
+class="math inline">\(SL\_Bitmap\)</span>构成了整个TLSF结构的一个总表头，称为控制表头(Control
+Header)，下面就是一个个物理块连续分布在一开始分配的大块内存中，每个物理块还有个表头，内部记录四个信息：块信息、前一个物理块的地址、前一个空闲块的地址、后一个空闲块的地址。</p>
+<ul>
+<li>块信息：最低位用于标记当前物理块是否是空闲的、次位用于标记前一个物理块是否是空闲的，剩余的位用于记录当前物理块的大小(包括表头)。</li>
+<li>前一个物理块的地址：指向前一个相邻的物理块地址。</li>
+<li>前一个空闲块的地址：指向前一个在相同二级划分区域范围内的空闲块地址，这个字段只有空闲块需要用到，如果物理块即将被分配，这个数据没有作用，可以用于写入真实数据，增加数据空间。</li>
+<li>后一个空闲块的地址：指向后一个在相同二级划分区域范围内的空闲块地址，这个字段只有空闲块需要用到，如果物理块即将被分配，这个数据没有作用，可以用于写入真实数据，增加数据空间。</li>
+</ul>
+<p>了解了这些基本概念后，还需要定义几种基本操作：</p>
+<ul>
+<li><span
+class="math inline">\(\textrm{BitScanBackword}\)</span>：返回数据中最高位的<span
+class="math inline">\(1\)</span>是第几位，简称FLS(Find Last Set)。</li>
+<li><span class="math inline">\(\textrm
+{BitScanForward}\)</span>：返回数据中最低位的<span
+class="math inline">\(1\)</span>是第几位，简称FFS(Find First Set)。</li>
+</ul>
+<p>这两个操作一般用于定位物理块的一二级索引，一二级索引下文会用FLI(First
+Level Index)和SLI(Second Level Index)表示。</p>
+<h3 id="tlsl的初始化">TLSL的初始化</h3>
+<p>初始化需要一块预定义的大内存块，假设大小为<span
+class="math inline">\(size\)</span>，在大内存块的首地址初始化Control
+Header，需要清零，建议使用calloc，然后将Control
+Header之后位置的地址作为第一个物理块的地址，此时物理块的大小为<span
+class="math inline">\(size-sizeof(Control)\)</span>，且默认是空闲的。</p>
+<p>根据物理块的大小通过FLS计算出FLI并标记<span
+class="math inline">\(FL\_Bitmap\)</span>，然后计算出SLI，并标记<span
+class="math inline">\(FL\_Bitmap[i]\)</span>，然后二级区域指向这个物理块，然后初始化物理块的Header，记录块信息(最低位为<span
+class="math inline">\(1\)</span>，因为默认空闲)，另外三个地址都为空，因为此时只有一个物理块，如图11所示：</p>
+<figure>
+<img src="image_10.png" alt="图11 - TLSL的初始化" />
+<figcaption aria-hidden="true">图11 - TLSL的初始化</figcaption>
+</figure>
+<p>至此初始化工作就完成了，虽然看起来有点奇怪，只有一个空闲块怎么分配多个对象，缘由都在分配操作上。</p>
+<h3 id="tlsl的分配">TLSL的分配</h3>
+<p>分配一个大小为<span
+class="math inline">\(size\)</span>的对象，除了要让<span
+class="math inline">\(size\)</span>内存对齐以外，还需要将物理块header的大小也一并计入，将总和作为新的<span
+class="math inline">\(size\)</span>，然后计算<span
+class="math inline">\(size\)</span>的FLI和SLI，如果FLI和SLI在对应的位图上没有找到标记，则尝试在<span
+class="math inline">\(FL\_Bitmap\)</span>中借助位运算和FFS找到最合适的一个标志位，如果找不到则说明没有合适空闲块，对象无法分配。</p>
+<p>找到空闲块之后，更新空闲块的头部信息，并返回数据地址，接下来根据空闲块的大小和数据的大小尝试对物理块进行分割，如果可以分割，就将多出来的物理块作为新的空闲块标记到Control中，如图12所示：</p>
+<figure>
+<img src="image_11.png" alt="图12 - TLSL的分配" />
+<figcaption aria-hidden="true">图12 - TLSL的分配</figcaption>
+</figure>
+<p>需要注意的是分割出来的新空闲块在插入时要注意原本在相同位置下是否已经存在空闲块，如果存在则将其插入到链表的表头，将空闲块连接起来。</p>
+<h3 id="tlsl的释放">TLSL的释放</h3>
+<p>释放一个对象时，通过Header里面的信息可以找到当前物理块的大小，老样子通过大小计算FLI和SLI，并加入对应位置的空闲链表，但是此时还需要做一件事，根据自身的大小找到下一个物理块，并将下一个物理块Header中的第二位标记为<span
+class="math inline">\(1\)</span>，因为自身得到释放变成了空闲块，那么下一个物理块需要记录前一个物理块是否空闲的信息，假设释放前的状态如图13所示：</p>
+<figure>
+<img src="image_12.png" alt="图13 - TLSL待释放的状态" />
+<figcaption aria-hidden="true">图13 - TLSL待释放的状态</figcaption>
+</figure>
+<p>将目标物理块空闲化之后，还需要尝试将目标物理块与前面一个相邻物理块进行合并，由于Header中记录了前一个物理块是否空闲的信息，根据该信息来判断是否可以完成合并，如果能合并，就将两个物理块合并成一个，增大尺寸以便后续可以用于分配更大的数据，以图13的状态为例，释放后会变成图14所示：</p>
+<figure>
+<img src="image_13.png" alt="图14 - TLSL的释放" />
+<figcaption aria-hidden="true">图14 - TLSL的释放</figcaption>
+</figure>
+<p>整个过程中有各种各样的细节，我不可能一一指出，但是大体思路就是这样，随着更多的分配和释放操作，指针信息会变得非常复杂，因此要非常小心，建议先好好捋清楚逻辑再动手。</p>
+<p>TLSL虽然不能完全根除内部碎片，但是它的算法也保证尽可能得到一个Good-Fit(分配的内存块大小与目标大小相近)。</p>
+<p>TLSL拥有以下优点：</p>
+<ol type="1">
+<li>支持任意顺序的内存分配和释放。</li>
+<li>分配与释放性能良好，都为常数级别，保证了一个性能的下限。</li>
+<li>内存连续，内部碎片少。</li>
+</ol>
+<p>TLSL拥有以下缺点：</p>
+<ol type="1">
+<li>预分配大小要大，但又不能太大，需要分析具体情况。</li>
+</ol>
+<p>虽然TLSL拥有常数级别的时间复杂度，但是这个常数还挺大的，它只是保证了性能的下限，而不是说一定万能的，和FreeList
+Allocator比起来，如果FreeList Allocator空闲块链表长度够短，那么FreeList
+Allocator的性能还是足够优秀的，大部分情况下，TLSL更适合分配比较大的数据，比如资源之类的对象。</p>
+<h1 id="总结">总结</h1>
+<p>内存池的算法各式各样，但却始终没有一个万能的内存分配器可供使用，了解每一种算法对自己遭遇的情形可能都会有所帮助。</p>
+<p>如果想更大程度地加强自己对内存的掌控，写一个自用的内存池也是很有必要的，但是之前所述的算法都是线程不安全的，如果要想在线程安全的环境下工作，需要了解更多知识，也可以去了解一下Arena
+Allocator，它的设计理念对多线程而言也是有很大帮助的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Algorithms/" rel="tag"># Algorithms</a>
+              <a href="/tags/Memory/" rel="tag"># Memory</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/12/13/treap/" rel="prev" title="树堆">
+                  <i class="fa fa-chevron-left"></i> 树堆
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Winder</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
