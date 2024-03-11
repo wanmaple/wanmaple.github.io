@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://wanmaple.github.io/2024/03/01/memory-pool/image_12.png">
 <meta property="og:image" content="https://wanmaple.github.io/2024/03/01/memory-pool/image_13.png">
 <meta property="article:published_time" content="2024-03-01T11:04:54.000Z">
-<meta property="article:modified_time" content="2024-03-01T11:05:13.403Z">
+<meta property="article:modified_time" content="2024-03-11T12:50:41.949Z">
 <meta property="article:author" content="Winder">
 <meta property="article:tag" content="Algorithms">
 <meta property="article:tag" content="Native">
@@ -195,9 +195,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-03-01 19:04:54 / Modified: 19:05:13" itemprop="dateCreated datePublished" datetime="2024-03-01T19:04:54+08:00">2024-03-01</time>
+      <time title="Created: 2024-03-01 19:04:54" itemprop="dateCreated datePublished" datetime="2024-03-01T19:04:54+08:00">2024-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-03-11 20:50:41" itemprop="dateModified" datetime="2024-03-11T20:50:41+08:00">2024-03-11</time>
     </span>
 
   
@@ -459,8 +465,8 @@ class="math inline">\(FL\_Bitmap\)</span>，然后计算出SLI，并标记<span
 class="math inline">\(FL\_Bitmap[i]\)</span>，然后二级区域指向这个物理块，然后初始化物理块的Header，记录块信息(最低位为<span
 class="math inline">\(1\)</span>，因为默认空闲)，另外三个地址都为空，因为此时只有一个物理块，如图11所示：</p>
 <figure>
-<img src="image_10.png" alt="图11 - TLSL的初始化" />
-<figcaption aria-hidden="true">图11 - TLSL的初始化</figcaption>
+<img src="image_10.png" alt="图11 - TLSF的初始化" />
+<figcaption aria-hidden="true">图11 - TLSF的初始化</figcaption>
 </figure>
 <p>至此初始化工作就完成了，虽然看起来有点奇怪，只有一个空闲块怎么分配多个对象，缘由都在分配操作上。</p>
 <h3 id="tlsf的分配">TLSF的分配</h3>
@@ -472,21 +478,21 @@ class="math inline">\(size\)</span>的FLI和SLI，如果FLI和SLI在对应的位
 class="math inline">\(FL\_Bitmap\)</span>中借助位运算和FFS找到最合适的一个标志位，如果找不到则说明没有合适空闲块，对象无法分配。</p>
 <p>找到空闲块之后，更新空闲块的头部信息，并返回数据地址，接下来根据空闲块的大小和数据的大小尝试对物理块进行分割，如果可以分割，就将多出来的物理块作为新的空闲块标记到Control中，如图12所示：</p>
 <figure>
-<img src="image_11.png" alt="图12 - TLSL的分配" />
-<figcaption aria-hidden="true">图12 - TLSL的分配</figcaption>
+<img src="image_11.png" alt="图12 - TLSF的分配" />
+<figcaption aria-hidden="true">图12 - TLSF的分配</figcaption>
 </figure>
 <p>需要注意的是分割出来的新空闲块在插入时要注意原本在相同位置下是否已经存在空闲块，如果存在则将其插入到链表的表头，将空闲块连接起来。</p>
 <h3 id="tlsf的释放">TLSF的释放</h3>
 <p>释放一个对象时，通过Header里面的信息可以找到当前物理块的大小，老样子通过大小计算FLI和SLI，并加入对应位置的空闲链表，但是此时还需要做一件事，根据自身的大小找到下一个物理块，并将下一个物理块Header中的第二位标记为<span
 class="math inline">\(1\)</span>，因为自身得到释放变成了空闲块，那么下一个物理块需要记录前一个物理块是否空闲的信息，假设释放前的状态如图13所示：</p>
 <figure>
-<img src="image_12.png" alt="图13 - TLSL待释放的状态" />
-<figcaption aria-hidden="true">图13 - TLSL待释放的状态</figcaption>
+<img src="image_12.png" alt="图13 - TLSF待释放的状态" />
+<figcaption aria-hidden="true">图13 - TLSF待释放的状态</figcaption>
 </figure>
 <p>将目标物理块空闲化之后，还需要尝试将目标物理块与前面一个相邻物理块进行合并，由于Header中记录了前一个物理块是否空闲的信息，根据该信息来判断是否可以完成合并，如果能合并，就将两个物理块合并成一个，增大尺寸以便后续可以用于分配更大的数据，以图13的状态为例，释放后会变成图14所示：</p>
 <figure>
-<img src="image_13.png" alt="图14 - TLSL的释放" />
-<figcaption aria-hidden="true">图14 - TLSL的释放</figcaption>
+<img src="image_13.png" alt="图14 - TLSF的释放" />
+<figcaption aria-hidden="true">图14 - TLSF的释放</figcaption>
 </figure>
 <p>整个过程中有各种各样的细节，我不可能一一指出，但是大体思路就是这样，随着更多的分配和释放操作，指针信息会变得非常复杂，因此要非常小心，建议先好好捋清楚逻辑再动手。</p>
 <p>TLSF虽然不能完全根除内部碎片，但是它的算法也保证尽可能得到一个Good-Fit(分配的内存块大小与目标大小相近)。</p>
