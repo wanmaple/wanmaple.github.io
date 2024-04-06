@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://wanmaple.github.io/2024/03/01/memory-pool/image_12.png">
 <meta property="og:image" content="https://wanmaple.github.io/2024/03/01/memory-pool/image_13.png">
 <meta property="article:published_time" content="2024-03-01T11:04:54.000Z">
-<meta property="article:modified_time" content="2024-03-11T12:50:41.949Z">
+<meta property="article:modified_time" content="2024-04-06T12:34:16.314Z">
 <meta property="article:author" content="Winder">
 <meta property="article:tag" content="Algorithms">
 <meta property="article:tag" content="Native">
@@ -203,7 +203,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-03-11 20:50:41" itemprop="dateModified" datetime="2024-03-11T20:50:41+08:00">2024-03-11</time>
+      <time title="Modified: 2024-04-06 20:34:16" itemprop="dateModified" datetime="2024-04-06T20:34:16+08:00">2024-04-06</time>
     </span>
 
   
@@ -417,7 +417,7 @@ class="math inline">\(FL\_Bitmap\)</span>。</li>
 class="math inline">\(sl\_bits\)</span>，目的是为了将当前大小范围再次划分成<span
 class="math inline">\(sl\_bits\)</span>份，要保证划分的区域内存对齐，二级位图的第<span
 class="math inline">\(j\)</span>位用于表示大小在<span
-class="math inline">\(\left[2^{i+min\_shift-i}+\cfrac{2^{i+min\_shift-i}}{sl\_bits}\cdot(j-1),2^{i+min\_shift-i}+\cfrac{2^{i+min\_shift-i}}{sl\_bits}\cdot
+class="math inline">\(\left[2^{i+min\_shift-1}+\cfrac{2^{i+min\_shift-1}}{sl\_bits}\cdot(j-1),2^{i+min\_shift-1}+\cfrac{2^{i+min\_shift-1}}{sl\_bits}\cdot
 j\right)\)</span>区间的内存块，二级位图之后会用<span
 class="math inline">\(SL\_Bitmap\)</span>或<span
 class="math inline">\(FL\_Bitmap[i]\)</span>表示。</li>
