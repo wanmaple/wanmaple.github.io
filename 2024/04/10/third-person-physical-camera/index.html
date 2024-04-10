@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wanmaple.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文讲解了一种第三人称物理相机的实现思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三人称物理相机">
+<meta property="og:url" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/index.html">
+<meta property="og:site_name" content="Winder&#39;s Blog">
+<meta property="og:description" content="本文讲解了一种第三人称物理相机的实现思路。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_0.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_1.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_2.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_3.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_4.png">
+<meta property="og:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_5.png">
+<meta property="article:published_time" content="2024-04-10T09:55:28.000Z">
+<meta property="article:modified_time" content="2024-04-10T09:56:13.366Z">
+<meta property="article:author" content="Winder">
+<meta property="article:tag" content="Gameplay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/image_0.png">
+
+
+<link rel="canonical" href="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://wanmaple.github.io/2024/04/10/third-person-physical-camera/","path":"2024/04/10/third-person-physical-camera/","title":"第三人称物理相机"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第三人称物理相机 | Winder's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Winder's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Game Programmer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">基本定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Winder</p>
+  <div class="site-description" itemprop="description">随便写写。</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wanmaple.github.io/2024/04/10/third-person-physical-camera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Winder">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Winder's Blog">
+      <meta itemprop="description" content="随便写写。">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第三人称物理相机 | Winder's Blog">
+      <meta itemprop="description" content="本文讲解了一种第三人称物理相机的实现思路。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第三人称物理相机
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-04-10 17:55:28 / Modified: 17:56:13" itemprop="dateCreated datePublished" datetime="2024-04-10T17:55:28+08:00">2024-04-10</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文讲解了一种第三人称物理相机的实现思路。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言">前言</h1>
+<p>第三人称相机虽然说是以第三人称视角锁定角色，但是其表现形式也不尽相同，比如UE5中创建的默认第三人称模板中，相机只会随着角色的平移而平移，但是在很多游戏中，在角色进行平移时，相机还会有旋转操作，如图1所示：</p>
+<figure>
+<img src="image_0.png"
+alt="图1 - 左侧是随着角色移动进行平移的相机，右侧是随着角色移动进行旋转的相机。" />
+<figcaption aria-hidden="true">图1 -
+左侧是随着角色移动进行平移的相机，右侧是随着角色移动进行旋转的相机。</figcaption>
+</figure>
+<p>另外，由于第三人称相机的特性，相机本身也是一个独立的物体，因此可能出现相机与目标之间出现其他阻挡物，而如果不处理这种情况，这个时候目标就会被阻挡物挡住，图2展示了这种可能：</p>
+<figure>
+<img src="image_1.png" alt="图2 - 相机被阻挡或者相机进入了其他物体" />
+<figcaption aria-hidden="true">图2 -
+相机被阻挡或者相机进入了其他物体</figcaption>
+</figure>
+<p>遇到这种情况的大部分处理方式是将相机放置到一个”合理”的仍然能看到角色的位置，如图3所示：</p>
+<figure>
+<img src="image_2.png" alt="图3 - 将相机放到合理位置" />
+<figcaption aria-hidden="true">图3 - 将相机放到合理位置</figcaption>
+</figure>
+<p>这种处理方式至少不会让玩家看不到目标，但是也有可能导致相机与角色距离过近，让玩家近乎占满整个屏幕，但是这种做法更加符合物理，因此一般也称为物理相机。</p>
+<p>也有少数游戏的做法，是将所有阻挡物改为半透明，让玩家仍然能在理想的距离下观察到目标，也有用XRay来显示被阻挡的角色的轮廓等实现方式。</p>
+<p>本文主要阐述一下个人对物理相机的一些实现思路。</p>
+<h1 id="基本定义">基本定义</h1>
+<p>首先要实现这样一个相机，我们需要一个相机控制器，所有相机相关的移动会在控制器中实现。</p>
+<p>那么控制器需要定义哪些可调整参数呢？</p>
+<ul>
+<li><p>偏移offset：默认情况下会认为相机是看向目标位置的，不过为了更通用一些，我们可以添加一个偏移offset来调整相机实际观察的位置，也就是相机最终看向的点是：</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vector3 lookingAt = target.position + offset;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>理想距离ideal_distance：这个就是定义的相机与目标的距离，如果不考虑相机的弹性效果，那么相机将始终与目标保持这个距离，但是一般为了让相机的效果更加出色，会给相机添加“弹性”。</p></li>
+</ul>
+<p>以上两个参数非常基本，接下来先来看一下相机的视角，如图4所示：</p>
+<figure>
+<img src="image_3.png" alt="图4 - 相机的Yaw,Pitch,Roll" />
+<figcaption aria-hidden="true">图4 - 相机的Yaw,Pitch,Roll</figcaption>
+</figure>
+<p>其中Yaw表示你摇头的方向，Pitch表示你点头的方向，Roll表示你摆头的方向。大部分情况下，我们只需要用到Yaw和Pitch(因为角色一般都是沿着重力方向站着的，即使站在斜坡上)，少数特殊情况中会用到Roll(比如角色沿着法线方向站立)，不过这里我们只考虑Yaw和Pitch。</p>
+<p>Yaw和Pitch的更新一般通过鼠标滑动或者右摇杆来控制，而这两种输入都可以理解成一个二维的矢量，其中横轴用于控制Yaw，纵轴用于控制Pitch。</p>
+<p>一般情况下，并不会对Yaw的范围做限制，也就是Yaw的范围就是-180度到180度，而Pitch会做限制，因为你抬头或者低头的时候应该是做不到超过某个角度的吧。</p>
+<p>综上所述，下面整理出和视角相关的参数。</p>
+<ul>
+<li>min_pitch：指相机能到达的最小Pitch，范围一般在-90度到0度之间。</li>
+<li>max_pitch：指相机能到达的最大Pitch，范围一般在0度到90度之间。</li>
+<li>yaw_speed：指相机进行Yaw旋转时的速度。</li>
+<li>pitch_speed：指相机进行Pitch旋转时的速度。</li>
+</ul>
+<p>另外一个可选的功能则是刚才有提到过的“弹性”，其实很多游戏中，相机会随着角色的跑动适当拉远或靠近，这样每次角色在开始跑动或者停止跑动时带来一种弹性的感觉，因为我不会截动图，可以自己去观察一些游戏中相机的表现，简而言之就是，如果角色朝前跑动，那么相机会有个往外弹的感觉，相反如果角色朝后跑动，那么相机会有个往内弹的感觉，如图5所示：</p>
+<figure>
+<img src="image_4.png" alt="图5 - 相机的弹性移动" />
+<figcaption aria-hidden="true">图5 - 相机的弹性移动</figcaption>
+</figure>
+<p>这里我们可以定义一个速度的阈值，如果目标的速度超过这个阈值，则相机开始产生弹性。</p>
+<ul>
+<li>speed_threshold：相机发生弹性的参考速度。</li>
+<li>bounce_duration：弹性从发生到停止所需时间，一般是一个较小的值。</li>
+<li>bounce_distance：弹性发生的距离(假设内外一致)。</li>
+</ul>
+<p>这里再简述一下过程，如果角色在相机正向的投影速度超过speed_threshold，则相机往后产生弹性，反之如果角色在相机背面的投影速度超过speed_threshold，则相机往前产生弹性，其他情况则会尝试复原回原本的理想距离。</p>
+<p>至此，一些可调整参数就定义完毕了，接下来讲一下我的实现。</p>
+<h1 id="实现思路">实现思路</h1>
+<p>虽然听起来逻辑有点复杂，但实际上可以建立一个非常简单的模型来实现这些功能，首先假想目标周围有一个球面，球面的半径假设为sphere_radius，而相机的最终位置就会落在这个球面上(没有阻挡时)，那么如果以相机的观察点为起点往外发射射线(射线的方向向量为相机当前的背面方向)，射线长度为sphere_radius，此时如果发生了碰撞，那么就将相机置于碰撞点，否则就将相机置于球面相交点，如图6所示：</p>
+<figure>
+<img src="image_5.png" alt="图6 - 左侧无碰撞，右侧有碰撞。" />
+<figcaption aria-hidden="true">图6 -
+左侧无碰撞，右侧有碰撞。</figcaption>
+</figure>
+<p>因此，我们维护一个当前的相机朝向向量camera_direction，当出现视角输入时，我们只需要旋转这个朝向向量(注意设置的视角限制)，然后做一次射线检测即可计算出相机的正确位置。</p>
+<p>在角色移动时，根据你选择的是旋转策略还是平移策略，由于平移策略不需要旋转相机，因此比较简单，如果是旋转策略，则需要计算角色与相机在xz平面上的新向量，因为角色的高度可能发生变化，但是我们不希望Pitch受到角色高度的影响，因此只需要计算xz平面上的分量，然后再与原来的y分量(Pitch分量)合并成新的朝向向量即可。</p>
+<p>在裁剪Pitch时，可以简单使用asin(camera_direction.y)得到当前向量的Pitch值，将其裁剪后再绕右向量旋转(始终在Local
+Space内旋转)。</p>
+<p>因此我们定义了一个更新相机的函数update_camera()，输入为sphere_radius,
+camera_direction，输出为相机位置。</p>
+<p>那么很显然，如果不考虑弹性的情况下，sphere_radius应该始终是ideal_distance。</p>
+<p>而发生弹性时要做的事就很简单了，我们只需要根据目标当前的速度在camera_direction上的投影值来判断弹性方向，我的做法是维护一个累加器来动态增减弹性参数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Vector3 velocity = trackingNode-&gt;<span class="built_in">get_velocity</span>();</span><br><span class="line"><span class="type">real_t</span> projection = velocity.<span class="built_in">dot</span>(_cameraForward);</span><br><span class="line"><span class="keyword">if</span> (projection &gt; _bounceSpeed) &#123;</span><br><span class="line">    _bouncingAcc = Math::<span class="built_in">min</span>(<span class="built_in">real_t</span>(_bouncingAcc + dt), _bounceDuration);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (projection &lt; -_bounceSpeed) &#123;</span><br><span class="line">    _bouncingAcc = Math::<span class="built_in">max</span>(<span class="built_in">real_t</span>(_bouncingAcc - dt), -_bounceDuration);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (_bouncingAcc &gt; <span class="number">0.0</span>) &#123;</span><br><span class="line">    _bouncingAcc = Math::<span class="built_in">max</span>(<span class="built_in">real_t</span>(_bouncingAcc - dt), <span class="built_in">DECIMAL_CORRECTION</span>(<span class="number">0.0</span>));</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (_bouncingAcc &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">    _bouncingAcc = Math::<span class="built_in">min</span>(<span class="built_in">real_t</span>(_bouncingAcc + dt), <span class="built_in">DECIMAL_CORRECTION</span>(<span class="number">0.0</span>));</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<p>将_bouncingAcc除以_bounceDuration后就可以得到一个-1到1范围的值(正负表示弹性方向)，这样我们就可以选择不同的插值方式来更新sphere_radius，然后再update_camera()即可。</p>
+<h1 id="总结">总结</h1>
+<p>实现方式当然多种多样，我所阐述的也只是我所能想到的比较容易理解的模型了。</p>
+<p>具体的相机逻辑还是要根据自己的游戏类型去定义，这里我只是提供了一种较为常用的实现方式。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Gameplay/" rel="tag"># Gameplay</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/03/01/memory-pool/" rel="prev" title="内存池">
+                  <i class="fa fa-chevron-left"></i> 内存池
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Winder</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
